@@ -87,13 +87,25 @@ export default function App() {
     setRecords([])
   }
 
+  function handleLogout() {
+    sessionStorage.removeItem(AUTH_KEY)
+    setAuthenticated(false)
+    setPage('dashboard')
+    setRecords([])
+    setDatabaseError('')
+  }
+
   if (!authenticated) {
     return <Login onLogin={handleLogin} />
   }
 
   return (
     <>
-      <Sidebar page={page} onNavigate={setPage} />
+      <Sidebar
+        page={page}
+        onNavigate={setPage}
+        onLogout={handleLogout}
+      />
 
       <main className="main">
         <Header page={page} />
