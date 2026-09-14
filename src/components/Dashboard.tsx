@@ -223,7 +223,7 @@ export function Dashboard({ records, onNavigate }: Props) {
                     >
                       <strong
                         style={{
-                          fontSize: '13.5px',
+                          fontSize: '14px',
                           lineHeight: '1.4',
                           wordBreak: 'break-word',
                         }}
@@ -233,7 +233,7 @@ export function Dashboard({ records, onNavigate }: Props) {
 
                       <span
                         style={{
-                          fontSize: '12px',
+                          fontSize: '12.5px',
                           color: '#7c8ba1',
                         }}
                       >
@@ -318,6 +318,23 @@ export function Dashboard({ records, onNavigate }: Props) {
             font-size: 1rem;
           }
 
+          .dashboard-page h2 {
+            font-size: 26px;
+          }
+
+          .dashboard-page h3 {
+            font-size: 18px;
+          }
+
+          .dashboard-page .stat-card strong {
+            font-size: 30px;
+          }
+
+          .dashboard-page .stat-card .compact-value {
+            font-size: 18px;
+            line-height: 1.35;
+          }
+
           /* MONITOR DESKTOP BESAR / FULL HD */
           @media (min-width: 1600px) {
             .dashboard-page {
@@ -339,6 +356,22 @@ export function Dashboard({ records, onNavigate }: Props) {
               min-height: 158px !important;
               padding: 23px 24px !important;
               border-radius: 18px !important;
+            }
+
+            .dashboard-page h2 {
+              font-size: 28px !important;
+            }
+
+            .dashboard-page h3 {
+              font-size: 19px !important;
+            }
+
+            .dashboard-page .stat-card strong {
+              font-size: 32px !important;
+            }
+
+            .dashboard-page .stat-card .compact-value {
+              font-size: 19px !important;
             }
 
             .dashboard-page .stat-icon {
@@ -514,7 +547,7 @@ function Step({
       <span
         style={{
           color: '#44546a',
-          fontSize: '13px',
+          fontSize: '13.5px',
           lineHeight: '1.5',
         }}
       >
