@@ -137,14 +137,13 @@ async function listRecords() {
       klasifikasi,
       kode_sekolah,
       jenis,
-      keterangan,
-      CAST(dibuat AS CHAR) AS dibuat,
-      CAST(diperbarui AS CHAR) AS diperbarui
+      keterangan
     FROM surat
     ORDER BY tanggal DESC, nomor_urut DESC
   `)
 
-  return rowsToRecords(Array.isArray(result) ? result[0] : result)
+  const rows = Array.isArray(result) ? result : []
+  return rowsToRecords(rows)
 }
 
 async function nextSequence(year: number, category: string) {
@@ -156,20 +155,24 @@ async function nextSequence(year: number, category: string) {
     [year, category.toUpperCase()],
   )
 
-  const rows = Array.isArray(result) ? result[0] : result
-  const row = Array.isArray(rows) ? rows[0] : undefined
-  return Number((row as Record<string, unknown> | undefined)?.next_sequence || 1)
+  const rows = Array.isArray(result) ? result : []
+  const row = rows[0] as Record<string, unknown> | undefined
+  return Number(row?.next_sequence || 1)
 }
 
 async function numberExists(number: string, exceptId?: string) {
   const db = getDb()
   const result = await db.execute(
-    `SELECT id FROM surat WHERE nomor_surat = ? ${exceptId ? 'AND id <> ?' : ''} LIMIT 1`,
+    `SELECT id
+     FROM surat
+     WHERE nomor_surat = ?
+     ${exceptId ? 'AND id <> ?' : ''}
+     LIMIT 1`,
     exceptId ? [number, exceptId] : [number],
   )
 
-  const rows = Array.isArray(result) ? result[0] : result
-  return Array.isArray(rows) && rows.length > 0
+  const rows = Array.isArray(result) ? result : []
+  return rows.length > 0
 }
 
 async function createRecord(data: LetterPayload) {
@@ -237,22 +240,6 @@ async function updateRecord(data: LetterPayload) {
     throw new Error('Keterangan/judul surat wajib diisi.')
   }
 
-  // Pastikan data memang ada sebelum UPDATE.
-  const db = getDb()
-
-  const existing = await db.execute(
-    `SELECT id FROM surat WHERE id = ? LIMIT 1`,
-    [id],
-  )
-
-  const existingRows = Array.isArray(existing)
-    ? existing[0]
-    : existing
-
-  if (!Array.isArray(existingRows) || existingRows.length === 0) {
-    throw new Error('Data surat tidak ditemukan.')
-  }
-
   const number = buildNumber({
     sequence,
     date,
@@ -262,14 +249,24 @@ async function updateRecord(data: LetterPayload) {
   })
 
   if (await numberExists(number, id)) {
-    throw new Error(
-      'Nomor surat tersebut sudah digunakan oleh data lain.',
-    )
+    throw new Error('Nomor surat tersebut sudah digunakan oleh data lain.')
   }
 
-  // UPDATE tidak bergantung pada bentuk metadata affectedRows
-  // dari driver. Setelah UPDATE, data dikembalikan lewat SELECT.
-  await db.execute(
+  const db = getDb()
+
+  // SELECT langsung mengembalikan array baris pada default driver.
+  const existing = await db.execute(
+    `SELECT id FROM surat WHERE id = ? LIMIT 1`,
+    [id],
+  )
+  const existingRows = Array.isArray(existing) ? existing : []
+
+  if (existingRows.length === 0) {
+    throw new Error('Data surat tidak ditemukan.')
+  }
+
+  // Gunakan fullResult untuk DML agar metadata hasil UPDATE konsisten.
+  const result = await db.execute(
     `UPDATE surat
      SET nomor_urut = ?, nomor_surat = ?, tanggal = ?, tahun = ?,
          klasifikasi = ?, kode_sekolah = ?, jenis = ?, keterangan = ?
@@ -285,7 +282,12 @@ async function updateRecord(data: LetterPayload) {
       description,
       id,
     ],
-  )
+    { fullResult: true },
+  ) as { rowsAffected?: number }
+
+  if (Number(result?.rowsAffected || 0) === 0) {
+    throw new Error('Tidak ada perubahan yang disimpan.')
+  }
 
   const updated = await db.execute(
     `SELECT
@@ -304,47 +306,23 @@ async function updateRecord(data: LetterPayload) {
     [id],
   )
 
-  const updatedRows = Array.isArray(updated)
-    ? updated[0]
-    : updated
-
-  const row =
-    Array.isArray(updatedRows)
-      ? updatedRows[0]
-      : undefined
+  const rows = Array.isArray(updated) ? updated : []
+  const row = rows[0] as Record<string, unknown> | undefined
 
   if (!row) {
-    throw new Error(
-      'Perubahan tidak ditemukan setelah disimpan.',
-    )
+    throw new Error('Data hasil perubahan tidak ditemukan.')
   }
 
   return {
-    id: cleanString((row as Record<string, unknown>).id),
-    sequence: Number(
-      (row as Record<string, unknown>).nomor_urut || 0,
-    ),
-    number: cleanString(
-      (row as Record<string, unknown>).nomor_surat,
-    ),
-    date: cleanString(
-      (row as Record<string, unknown>).tanggal,
-    ).slice(0, 10),
-    year: Number(
-      (row as Record<string, unknown>).tahun || 0,
-    ),
-    classification: cleanString(
-      (row as Record<string, unknown>).klasifikasi,
-    ),
-    schoolCode: cleanString(
-      (row as Record<string, unknown>).kode_sekolah,
-    ),
-    category: cleanString(
-      (row as Record<string, unknown>).jenis,
-    ),
-    description: cleanString(
-      (row as Record<string, unknown>).keterangan,
-    ),
+    id: cleanString(row.id),
+    sequence: Number(row.nomor_urut || 0),
+    number: cleanString(row.nomor_surat),
+    date: cleanString(row.tanggal).slice(0, 10),
+    year: Number(row.tahun || 0),
+    classification: cleanString(row.klasifikasi),
+    schoolCode: cleanString(row.kode_sekolah),
+    category: cleanString(row.jenis),
+    description: cleanString(row.keterangan),
   } satisfies import('../src/types').LetterRecord
 }
 
@@ -353,39 +331,24 @@ async function deleteRecord(id: string) {
 
   const db = getDb()
 
-  // Pastikan data ada sebelum DELETE.
   const existing = await db.execute(
     `SELECT id FROM surat WHERE id = ? LIMIT 1`,
     [id],
   )
+  const existingRows = Array.isArray(existing) ? existing : []
 
-  const existingRows = Array.isArray(existing)
-    ? existing[0]
-    : existing
-
-  if (!Array.isArray(existingRows) || existingRows.length === 0) {
+  if (existingRows.length === 0) {
     throw new Error('Data surat tidak ditemukan.')
   }
 
-  await db.execute(
+  const result = await db.execute(
     `DELETE FROM surat WHERE id = ?`,
     [id],
-  )
+    { fullResult: true },
+  ) as { rowsAffected?: number }
 
-  // Verifikasi bahwa data benar-benar sudah terhapus.
-  const check = await db.execute(
-    `SELECT id FROM surat WHERE id = ? LIMIT 1`,
-    [id],
-  )
-
-  const checkRows = Array.isArray(check)
-    ? check[0]
-    : check
-
-  if (Array.isArray(checkRows) && checkRows.length > 0) {
-    throw new Error(
-      'Nomor surat belum berhasil dihapus dari database.',
-    )
+  if (Number(result?.rowsAffected || 0) === 0) {
+    throw new Error('Nomor surat gagal dihapus.')
   }
 
   return { id }
