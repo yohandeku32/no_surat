@@ -26,7 +26,9 @@ export function Dashboard({ records, onNavigate }: Props) {
   const next =
     currentYearRecords.length > 0
       ? Math.max(
-          ...currentYearRecords.map((r) => Number(r.sequence) || 0),
+          ...currentYearRecords.map(
+            (r) => Number(r.sequence) || 0,
+          ),
         ) + 1
       : 1
 
@@ -37,9 +39,7 @@ export function Dashboard({ records, onNavigate }: Props) {
 
   const monthCount = currentMonthRecords.length
 
-  // Nomor surat terakhir:
-  // hanya mengambil nomor urut terbesar dari BULAN BERJALAN.
-  // Surat bulan sebelumnya yang diinput manual tidak ikut dihitung.
+  // Nomor terakhir hanya berdasarkan bulan berjalan
   const lastNumberRecord =
     currentMonthRecords.length > 0
       ? [...currentMonthRecords].sort(
@@ -49,7 +49,7 @@ export function Dashboard({ records, onNavigate }: Props) {
         )[0]
       : null
 
-  // Daftar nomor terbaru tetap berdasarkan tanggal dan nomor urut
+  // Nomor terbaru berdasarkan tanggal
   const latest = [...currentYearRecords]
     .sort(
       (a, b) =>
@@ -60,10 +60,29 @@ export function Dashboard({ records, onNavigate }: Props) {
     .slice(0, 5)
 
   return (
-    <section className="page-stack">
-      <div className="welcome-row">
+    <section
+      className="page-stack"
+      style={{
+        margin: '8px 12px 24px 12px',
+      }}
+    >
+      {/* HEADER */}
+      <div
+        className="welcome-row"
+        style={{
+          marginBottom: '22px',
+        }}
+      >
         <div>
-          <h2>Selamat datang</h2>
+          <h2
+            style={{
+              marginBottom: '6px',
+              letterSpacing: '-0.3px',
+            }}
+          >
+            Selamat datang
+          </h2>
+
           <p>
             Kelola penomoran surat sekolah dengan cepat dan rapi.
           </p>
@@ -72,42 +91,74 @@ export function Dashboard({ records, onNavigate }: Props) {
         <button
           className="primary-button"
           onClick={() => onNavigate('buat')}
+          style={{
+            minHeight: '46px',
+            padding: '0 18px',
+            boxShadow: '0 8px 20px rgba(37, 99, 235, 0.18)',
+          }}
         >
           <FilePlus2 size={17} />
           Buat Nomor Surat
         </button>
       </div>
 
-      <div className="stats-grid">
+      {/* STATISTIK */}
+      <div
+        className="stats-grid"
+        style={{
+          gap: '16px',
+          marginBottom: '22px',
+        }}
+      >
         <Stat
-          icon={<FilePlus2 />}
+          icon={<FilePlus2 size={21} strokeWidth={2.2} />}
           value={currentYearRecords.length}
           label="Surat tahun berjalan"
+          iconColor="#2563eb"
+          iconBackground="#eaf2ff"
         />
 
         <Stat
-          icon={<Hash />}
+          icon={<Hash size={21} strokeWidth={2.2} />}
           value={String(next).padStart(3, '0')}
           label="Nomor berikutnya"
+          iconColor="#7c3aed"
+          iconBackground="#f2eaff"
         />
 
         <Stat
-          icon={<CheckCircle2 />}
+          icon={<CheckCircle2 size={21} strokeWidth={2.2} />}
           value={lastNumberRecord?.number ?? '-'}
-          label="Nomor terakhir"
+          label="Nomor terakhir bulan ini"
           compact
+          iconColor="#16a34a"
+          iconBackground="#eaf8ef"
         />
 
         <Stat
-          icon={<Search />}
+          icon={<Search size={21} strokeWidth={2.2} />}
           value={monthCount}
           label="Surat bulan ini"
+          iconColor="#ea580c"
+          iconBackground="#fff1e8"
         />
       </div>
 
-      <div className="two-column">
+      {/* CONTENT */}
+      <div
+        className="two-column"
+        style={{
+          gap: '18px',
+        }}
+      >
+        {/* NOMOR TERBARU */}
         <div className="card">
-          <div className="card-header">
+          <div
+            className="card-header"
+            style={{
+              marginBottom: '16px',
+            }}
+          >
             <div>
               <h3>Nomor Terbaru</h3>
               <p>Surat yang paling baru disimpan.</p>
@@ -116,21 +167,61 @@ export function Dashboard({ records, onNavigate }: Props) {
             <button
               className="text-button"
               onClick={() => onNavigate('riwayat')}
+              style={{
+                whiteSpace: 'nowrap',
+              }}
             >
-              Lihat semua <ArrowRight size={15} />
+              Lihat semua
+              <ArrowRight size={15} />
             </button>
           </div>
 
           {latest.length ? (
             <div className="mini-table">
-              {latest.map((r) => (
-                <div className="mini-row" key={r.id}>
-                  <div>
-                    <strong>{r.number}</strong>
-                    <span>{r.date}</span>
+              {latest.map((r, index) => (
+                <div
+                  className="mini-row"
+                  key={r.id}
+                  style={{
+                    padding: '13px 0',
+                    borderBottom:
+                      index === latest.length - 1
+                        ? 'none'
+                        : '1px solid #edf1f5',
+                  }}
+                >
+                  <div
+                    style={{
+                      minWidth: 0,
+                      gap: '5px',
+                    }}
+                  >
+                    <strong
+                      style={{
+                        fontSize: '13px',
+                        lineHeight: '1.4',
+                        wordBreak: 'break-word',
+                      }}
+                    >
+                      {r.number}
+                    </strong>
+
+                    <span
+                      style={{
+                        fontSize: '12px',
+                        color: '#7c8ba1',
+                      }}
+                    >
+                      {r.date}
+                    </span>
                   </div>
 
-                  <span className="desc">
+                  <span
+                    className="desc"
+                    style={{
+                      maxWidth: '42%',
+                    }}
+                  >
                     {r.description}
                   </span>
                 </div>
@@ -143,34 +234,53 @@ export function Dashboard({ records, onNavigate }: Props) {
           )}
         </div>
 
+        {/* CARA MENGGUNAKAN */}
         <div className="card">
-          <div className="card-header">
+          <div
+            className="card-header"
+            style={{
+              marginBottom: '18px',
+            }}
+          >
             <div>
               <h3>Cara Menggunakan</h3>
               <p>Alur sederhana untuk operator.</p>
             </div>
           </div>
 
-          <div className="steps">
-            <div>
-              <b>01</b>
-              <span>Pilih tanggal dan jenis surat.</span>
-            </div>
+          <div
+            className="steps"
+            style={{
+              gap: '10px',
+            }}
+          >
+            <Step
+              number="01"
+              text="Pilih tanggal dan jenis surat."
+              background="#eaf2ff"
+              color="#2563eb"
+            />
 
-            <div>
-              <b>02</b>
-              <span>Nomor urut terisi otomatis.</span>
-            </div>
+            <Step
+              number="02"
+              text="Nomor urut terisi otomatis."
+              background="#f2eaff"
+              color="#7c3aed"
+            />
 
-            <div>
-              <b>03</b>
-              <span>Nomor urut boleh diubah manual.</span>
-            </div>
+            <Step
+              number="03"
+              text="Nomor urut boleh diubah manual."
+              background="#eaf8ef"
+              color="#16a34a"
+            />
 
-            <div>
-              <b>04</b>
-              <span>Isi keterangan lalu simpan.</span>
-            </div>
+            <Step
+              number="04"
+              text="Isi keterangan lalu simpan."
+              background="#fff1e8"
+              color="#ea580c"
+            />
           </div>
         </div>
       </div>
@@ -183,19 +293,115 @@ function Stat({
   value,
   label,
   compact = false,
+  iconColor,
+  iconBackground,
 }: {
   icon: React.ReactNode
   value: string | number
   label: string
   compact?: boolean
+  iconColor: string
+  iconBackground: string
 }) {
   return (
-    <div className="stat-card">
-      <div className="stat-icon">{icon}</div>
-      <strong className={compact ? 'compact-value' : ''}>
+    <div
+      className="stat-card"
+      style={{
+        minHeight: '142px',
+        padding: '20px 21px',
+        borderRadius: '16px',
+        transition:
+          'transform .18s ease, box-shadow .18s ease',
+      }}
+    >
+      <div
+        className="stat-icon"
+        style={{
+          width: '46px',
+          height: '46px',
+          borderRadius: '13px',
+          background: iconBackground,
+          color: iconColor,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: '14px',
+        }}
+      >
+        {icon}
+      </div>
+
+      <strong
+        className={compact ? 'compact-value' : ''}
+        style={{
+          color: '#14213d',
+          lineHeight: '1.2',
+          display: 'block',
+          wordBreak: compact ? 'break-word' : 'normal',
+        }}
+      >
         {value}
       </strong>
-      <span>{label}</span>
+
+      <span
+        style={{
+          marginTop: '6px',
+          display: 'block',
+        }}
+      >
+        {label}
+      </span>
+    </div>
+  )
+}
+
+function Step({
+  number,
+  text,
+  background,
+  color,
+}: {
+  number: string
+  text: string
+  background: string
+  color: string
+}) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        padding: '10px 0',
+      }}
+    >
+      <b
+        style={{
+          width: '34px',
+          height: '34px',
+          minWidth: '34px',
+          borderRadius: '10px',
+          background,
+          color,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '11px',
+          fontWeight: 800,
+        }}
+      >
+        {number}
+      </b>
+
+      <span
+        style={{
+          color: '#44546a',
+          fontSize: '13px',
+          lineHeight: '1.5',
+        }}
+      >
+        {text}
+      </span>
     </div>
   )
 }
