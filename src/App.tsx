@@ -70,7 +70,7 @@ export default function App() {
         <div className="content">
           {loading && (
             <div className="card" style={{ marginBottom: 18, padding: 16 }}>
-              Menghubungkan ke database Google Sheets...
+              Menghubungkan ke database...
             </div>
           )}
 
