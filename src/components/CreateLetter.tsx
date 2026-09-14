@@ -59,7 +59,7 @@ export function CreateLetter({ records, onSaved }: Props) {
 
   const number = `${classification}/${String(
     Number(effectiveSequence) || 1,
-  ).padStart(3, '0')}/${schoolCode || SCHOOL_DEFAULT}/${category}/${MONTH_ROMAN[
+  ).padStart(3, '0')}/${schoolCode || SCHOOL_DEFAULT}/${category}.${MONTH_ROMAN[
     dateObj.getMonth() + 1
   ]}/${year}`
 
