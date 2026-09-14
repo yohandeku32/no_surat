@@ -1,19 +1,7 @@
-# SI-NOSURAT Sekolah
+# SIPESURAT Sekolah
 
 Prototype penomoran surat sekolah menggunakan React + TypeScript + Vite.
 
-## Struktur
-
-- `src/App.tsx` — pengatur halaman dan state aplikasi
-- `src/components/Sidebar.tsx` — sidebar navigasi
-- `src/components/Header.tsx` — header/breadcrumb
-- `src/components/Dashboard.tsx` — dashboard
-- `src/components/CreateLetter.tsx` — form pembuatan nomor surat
-- `src/components/History.tsx` — riwayat penomoran
-- `src/components/Settings.tsx` — pengaturan
-- `src/constants.ts` — kode klasifikasi, jenis surat, kode sekolah, bulan Romawi
-- `src/types.ts` — tipe data
-- `src/index.css` — seluruh styling global/layout
 
 ## Menjalankan
 
