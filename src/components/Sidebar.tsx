@@ -4,32 +4,38 @@ import {
   Home,
   Settings2,
   Plus,
+  LogOut,
 } from 'lucide-react'
 import type { Page } from '../types'
 
 interface Props {
   page: Page
   onNavigate: (page: Page) => void
+  onLogout: () => void
 }
 
-const items = [
+const items: Array<{
+  id: Page
+  label: string
+  icon: typeof Home
+}> = [
   {
-    id: 'dashboard' as Page,
+    id: 'dashboard',
     label: 'Dashboard',
     icon: Home,
   },
   {
-    id: 'buat' as Page,
+    id: 'buat',
     label: 'Buat Nomor Surat',
     icon: Plus,
   },
   {
-    id: 'riwayat' as Page,
+    id: 'riwayat',
     label: 'Riwayat Penomoran',
     icon: History,
   },
   {
-    id: 'pengaturan' as Page,
+    id: 'pengaturan',
     label: 'Pengaturan',
     icon: Settings2,
   },
@@ -38,6 +44,7 @@ const items = [
 export function Sidebar({
   page,
   onNavigate,
+  onLogout,
 }: Props) {
   return (
     <aside
@@ -48,7 +55,6 @@ export function Sidebar({
         flexDirection: 'column',
       }}
     >
-      {/* BRAND */}
       <div
         className="brand"
         style={{
@@ -58,7 +64,6 @@ export function Sidebar({
           padding: '28px 12px 25px',
         }}
       >
-        {/* LOGO YAYASAN */}
         <div
           style={{
             width: '52px',
@@ -81,12 +86,7 @@ export function Sidebar({
           />
         </div>
 
-        {/* NAMA APLIKASI */}
-        <div
-          style={{
-            minWidth: 0,
-          }}
-        >
+        <div style={{ minWidth: 0 }}>
           <strong
             style={{
               display: 'block',
@@ -114,35 +114,29 @@ export function Sidebar({
         </div>
       </div>
 
-      {/* NAVIGASI */}
       <div className="nav-section-label">
         MENU UTAMA
       </div>
 
       <nav>
-        {items.map(
-          ({
-            id,
-            label,
-            icon: Icon,
-          }) => (
+        {items.map((item) => {
+          const Icon = item.icon
+          const active = page === item.id
+
+          return (
             <button
-              key={id}
-              className={`nav-item ${
-                page === id ? 'active' : ''
-              }`}
-              onClick={() =>
-                onNavigate(id)
-              }
+              key={item.id}
+              type="button"
+              onClick={() => onNavigate(item.id)}
+              className={active ? 'nav-item active' : 'nav-item'}
             >
               <Icon size={18} />
-              <span>{label}</span>
+              <span>{item.label}</span>
             </button>
-          ),
-        )}
+          )
+        })}
       </nav>
 
-      {/* INFORMASI SEKOLAH */}
       <div
         className="sidebar-bottom"
         style={{
@@ -152,15 +146,13 @@ export function Sidebar({
       >
         <div
           style={{
-            borderTop:
-              '1px solid rgba(255,255,255,.10)',
+            borderTop: '1px solid rgba(255,255,255,.10)',
             paddingTop: '18px',
           }}
         >
           <div
             style={{
-              background:
-                'rgba(255,255,255,.07)',
+              background: 'rgba(255,255,255,.07)',
               borderRadius: '14px',
               padding: '16px',
               lineHeight: 1.55,
@@ -199,6 +191,48 @@ export function Sidebar({
               Nusa Tenggara Timur
             </div>
           </div>
+
+          <button
+            type="button"
+            onClick={onLogout}
+            title="Keluar dari SIPESURAT"
+            style={{
+              width: '100%',
+              marginTop: '12px',
+              border: '1px solid rgba(255,255,255,.10)',
+              background: 'rgba(255,255,255,.055)',
+              color: '#dbe7ef',
+              borderRadius: '11px',
+              padding: '11px 13px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              fontSize: '13px',
+              fontWeight: 750,
+              cursor: 'pointer',
+              transition: 'all .18s ease',
+            }}
+            onMouseEnter={(event) => {
+              event.currentTarget.style.background =
+                'rgba(239, 68, 68, .15)'
+              event.currentTarget.style.borderColor =
+                'rgba(239, 68, 68, .35)'
+              event.currentTarget.style.color =
+                '#fecaca'
+            }}
+            onMouseLeave={(event) => {
+              event.currentTarget.style.background =
+                'rgba(255,255,255,.055)'
+              event.currentTarget.style.borderColor =
+                'rgba(255,255,255,.10)'
+              event.currentTarget.style.color =
+                '#dbe7ef'
+            }}
+          >
+            <LogOut size={16} />
+            Keluar
+          </button>
         </div>
       </div>
     </aside>
