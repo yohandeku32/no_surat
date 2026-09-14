@@ -8,7 +8,7 @@ import type { LetterRecord } from '../types'
  * VITE_API_URL=https://nama-project-anda.vercel.app/api/surat
  */
 export const API_URL =
-  import.meta.env.VITE_API_URL || 'nosurat.vercel.app/api/surat'
+  'https://nosurat.vercel.app/api/surat'
 
 type ApiResponse<T> = {
   success: boolean
