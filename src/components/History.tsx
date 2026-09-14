@@ -17,9 +17,9 @@ import type { LetterRecord } from '../types'
 
 interface Props {
   records: LetterRecord[]
-  onClear: () => void
-  onUpdate: (record: LetterRecord) => void
-  onDelete: (id: string) => void
+  onClear: () => Promise<void>
+  onUpdate: (record: LetterRecord) => Promise<LetterRecord>
+  onDelete: (id: string) => Promise<void>
 }
 
 type ModalType = 'edit' | 'deleteOne' | 'deleteAll'
@@ -110,7 +110,7 @@ export function History({
     ]}/${record.year}`
   }
 
-  function saveEdit() {
+  async function saveEdit() {
     if (!editing) return
 
     if (
@@ -163,7 +163,7 @@ export function History({
       return
     }
 
-    onUpdate(updated)
+    await onUpdate(updated)
 
     window.dispatchEvent(
       new CustomEvent('si-nosurat:toast', {
@@ -180,10 +180,10 @@ export function History({
     closeModal()
   }
 
-  function confirmDeleteOne() {
+  async function confirmDeleteOne() {
     if (!deleting) return
 
-    onDelete(deleting.id)
+    await onDelete(deleting.id)
 
     window.dispatchEvent(
       new CustomEvent('si-nosurat:toast', {
@@ -199,8 +199,8 @@ export function History({
     closeModal()
   }
 
-  function confirmDeleteAll() {
-    onClear()
+  async function confirmDeleteAll() {
+    await onClear()
 
     window.dispatchEvent(
       new CustomEvent('si-nosurat:toast', {
