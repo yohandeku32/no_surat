@@ -52,7 +52,7 @@ export function Login({ onLogin }: Props) {
         padding: '28px',
         boxSizing: 'border-box',
         backgroundImage:
-          "linear-gradient(rgba(15, 31, 38, 0.34), rgba(15, 31, 38, 0.46)), url('/sekolah.jpg')",
+          "linear-gradient(rgba(15, 31, 38, 0.34), rgba(15, 31, 38, 0.46)), url('Public/sekolah.jpg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
