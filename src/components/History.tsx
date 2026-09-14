@@ -108,7 +108,7 @@ export function History({
 
     return `${record.classification}/${String(
       Number(record.sequence) || 1,
-    ).padStart(3, '0')}/${record.schoolCode || SCHOOL_DEFAULT}/${record.category}/${MONTH_ROMAN[
+    ).padStart(3, '0')}/${record.schoolCode || SCHOOL_DEFAULT}/${record.category}.${MONTH_ROMAN[
       dateObj.getMonth() + 1
     ]}/${record.year}`
   }
