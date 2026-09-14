@@ -8,7 +8,7 @@ import type { LetterRecord } from '../types'
  * VITE_API_URL=https://nama-project-anda.vercel.app/api/surat
  */
 export const API_URL =
-  import.meta.env.VITE_API_URL || 'GANTI_DENGAN_URL_API_VERCEL'
+  import.meta.env.VITE_API_URL || 'nosurat.vercel.app/api/surat'
 
 type ApiResponse<T> = {
   success: boolean
@@ -20,7 +20,7 @@ type ApiResponse<T> = {
 }
 
 function ensureConfigured() {
-  if (!API_URL || API_URL === 'GANTI_DENGAN_URL_API_VERCEL') {
+  if (!API_URL || API_URL === 'nosurat.vercel.app/api/surat') {
     throw new Error(
       'URL API Vercel belum diatur. Atur VITE_API_URL saat build aplikasi GitHub Pages.',
     )
