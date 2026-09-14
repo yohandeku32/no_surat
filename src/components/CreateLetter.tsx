@@ -186,7 +186,7 @@ export function CreateLetter({ records, onSaved }: Props) {
       showModal(
         'success',
         'Nomor Surat Berhasil Disimpan',
-        'Nomor surat telah berhasil disimpan ke database Google Sheets.',
+        'Nomor surat telah berhasil disimpan ke database.',
         saved.number,
       )
     } catch (error) {
