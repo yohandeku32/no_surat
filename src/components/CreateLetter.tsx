@@ -379,19 +379,9 @@ export function CreateLetter({ records, onSaved }: Props) {
                 className="primary-button"
                 onClick={() => void save()}
                 disabled={saving}
-                aria-busy={saving}
               >
-                {saving ? (
-                  <>
-                    <span className="button-spinner" />
-                    Menyimpan...
-                  </>
-                ) : (
-                  <>
-                    <Save size={17} />
-                    Simpan Nomor Surat
-                  </>
-                )}
+                <Save size={17} />
+                {saving ? 'Menyimpan...' : 'Simpan Nomor Surat'}
               </button>
             </div>
           </div>
@@ -431,30 +421,6 @@ export function CreateLetter({ records, onSaved }: Props) {
           </div>
         </div>
       </section>
-
-      <style>
-        {`
-          .button-spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255,255,255,.35);
-            border-top-color: #ffffff;
-            border-radius: 50%;
-            animation: siNosuratSpin .7s linear infinite;
-            display: inline-block;
-          }
-
-          .primary-button:disabled,
-          .secondary-button:disabled {
-            opacity: .65;
-            cursor: not-allowed;
-          }
-
-          @keyframes siNosuratSpin {
-            to { transform: rotate(360deg); }
-          }
-        `}
-      </style>
 
       {/* CUSTOM MODAL */}
       {modal.open && (
