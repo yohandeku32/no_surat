@@ -16,7 +16,11 @@
     "@vitejs/plugin-react": "^5.0.2",
     "typescript": "^5.8.3",
     "@types/react": "^19.1.10",
-    "@types/react-dom": "^19.1.7"
+    "@types/react-dom": "^19.1.7",
+    "@tidbcloud/serverless": "^0.0.7"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "engines": {
+    "node": "24.x"
+  }
 }
