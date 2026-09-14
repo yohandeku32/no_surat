@@ -106,7 +106,7 @@ function buildNumber(data: Required<Pick<LetterPayload, 'sequence' | 'date' | 'c
   const category = cleanString(data.category, 'KEP').toUpperCase() || 'KEP'
   const date = normalizeDate(data.date)
 
-  return `${classification}/${String(sequence).padStart(3, '0')}/${schoolCode}/${category}/${romanMonth(date)}/${yearFromDate(date)}`
+  return `${classification}/${String(sequence).padStart(3, '0')}/${schoolCode}/${category}.${romanMonth(date)}/${yearFromDate(date)}`
 }
 
 async function rowsToRecords(rows: unknown): Promise<LetterRecord[]> {
