@@ -227,7 +227,7 @@ export function CreateLetter({ records, onSaved }: Props) {
   return (
     <>
       <section
-        className="page-stack"
+        className="page-stack create-page"
         style={{
           margin: '20px 24px 28px 24px',
         }}
@@ -235,7 +235,7 @@ export function CreateLetter({ records, onSaved }: Props) {
         <div
           className="welcome-row"
           style={{
-            marginBottom: '22px',
+            marginBottom: '14px',
           }}
         >
           <div>
@@ -258,7 +258,9 @@ export function CreateLetter({ records, onSaved }: Props) {
           className="two-column create-layout"
           style={{
             alignItems: 'start',
-            gap: '18px',
+            gap: '20px',
+            gridTemplateColumns:
+              'minmax(0, 1.35fr) minmax(320px, 0.65fr)',
           }}
         >
           {/* FORM DATA SURAT */}
@@ -274,7 +276,7 @@ export function CreateLetter({ records, onSaved }: Props) {
           >
             <div
               style={{
-                padding: '20px 22px',
+                padding: '16px 20px',
                 background:
                   'linear-gradient(135deg, #edf5ff 0%, #f7fbff 58%, #ffffff 100%)',
                 borderBottom: '1px solid #dbeafe',
@@ -309,7 +311,7 @@ export function CreateLetter({ records, onSaved }: Props) {
               </div>
             </div>
 
-            <div style={{ padding: '22px' }}>
+            <div style={{ padding: '18px 20px' }}>
               <div className="form-grid">
                 <Field label="Tanggal Surat">
                   <div style={{ position: 'relative' }}>
@@ -453,8 +455,8 @@ export function CreateLetter({ records, onSaved }: Props) {
               <label
                 style={{
                   display: 'block',
-                  marginTop: '20px',
-                  marginBottom: '8px',
+                  marginTop: '14px',
+                  marginBottom: '7px',
                 }}
               >
                 Nomor Urut{' '}
@@ -465,7 +467,7 @@ export function CreateLetter({ records, onSaved }: Props) {
                 className="sequence-wrap"
                 style={{
                   marginTop: '0',
-                  padding: '12px',
+                  padding: '9px',
                   border: '1px solid #f3c7d2',
                   borderRadius: '14px',
                   background: '#fff5f7',
@@ -474,8 +476,8 @@ export function CreateLetter({ records, onSaved }: Props) {
               >
                 <div
                   style={{
-                    width: '38px',
-                    height: '38px',
+                    width: '36px',
+                    height: '36px',
                     borderRadius: '11px',
                     background: '#ffe5eb',
                     color: '#db2777',
@@ -509,8 +511,8 @@ export function CreateLetter({ records, onSaved }: Props) {
               <div
                 className="helper"
                 style={{
-                  marginTop: '10px',
-                  padding: '13px 14px',
+                  marginTop: '8px',
+                  padding: '10px 12px',
                   borderRadius: '12px',
                   background: '#f5f3ff',
                   border: '1px solid #e9ddff',
@@ -531,8 +533,8 @@ export function CreateLetter({ records, onSaved }: Props) {
               <label
                 style={{
                   display: 'block',
-                  marginTop: '20px',
-                  marginBottom: '8px',
+                  marginTop: '14px',
+                  marginBottom: '7px',
                 }}
               >
                 Keterangan / Judul Surat
@@ -566,8 +568,8 @@ export function CreateLetter({ records, onSaved }: Props) {
                   maxLength={200}
                   style={{
                     width: '100%',
-                    minHeight: '108px',
-                    resize: 'vertical',
+                    minHeight: '78px',
+                    resize: 'none',
                     padding: '15px 15px 15px 58px',
                     boxSizing: 'border-box',
                   }}
@@ -589,8 +591,8 @@ export function CreateLetter({ records, onSaved }: Props) {
               <div
                 className="form-actions"
                 style={{
-                  marginTop: '18px',
-                  padding: '14px',
+                  marginTop: '12px',
+                  padding: '10px 12px',
                   borderRadius: '14px',
                   background: '#f3f8ff',
                   border: '1px solid #dbeafe',
@@ -637,7 +639,7 @@ export function CreateLetter({ records, onSaved }: Props) {
           >
             <div
               style={{
-                padding: '20px 22px',
+                padding: '16px 20px',
                 background:
                   'linear-gradient(135deg, #ecfbf4 0%, #f5fffa 60%, #ffffff 100%)',
                 borderBottom: '1px solid #d7f4e7',
@@ -689,10 +691,10 @@ export function CreateLetter({ records, onSaved }: Props) {
               </button>
             </div>
 
-            <div style={{ padding: '24px' }}>
+            <div style={{ padding: '18px' }}>
               <div
                 style={{
-                  padding: '24px 20px',
+                  padding: '20px 16px',
                   border: '1px solid #bde8d6',
                   borderRadius: '16px',
                   background:
@@ -733,6 +735,28 @@ export function CreateLetter({ records, onSaved }: Props) {
 
       <style>
         {`
+          .page-stack.create-page {
+            width: 100%;
+          }
+
+          .create-layout > .card:first-child {
+            min-width: 0;
+          }
+
+          .create-layout > .card:last-child {
+            min-width: 0;
+          }
+
+          @media (max-height: 800px) {
+            .create-layout {
+              gap: 14px !important;
+            }
+
+            .create-layout .form-grid {
+              gap: 12px !important;
+            }
+          }
+
           .si-field-control,
           .si-sequence-input,
           .si-textarea-control {
