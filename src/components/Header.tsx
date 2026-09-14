@@ -12,7 +12,7 @@ export function Header({ page }: { page: Page }) {
     <header
       className="topbar"
       style={{
-        paddingLeft: '24px',
+        paddingLeft: '48px',
         paddingRight: '24px',
         minHeight: '94px',
         display: 'flex',
@@ -31,7 +31,7 @@ export function Header({ page }: { page: Page }) {
         <div
           className="breadcrumb"
           style={{
-            marginBottom: '5px',
+            marginBottom: '6px',
           }}
         >
           SIPESURAT / <span>{titles[page]}</span>
@@ -47,7 +47,7 @@ export function Header({ page }: { page: Page }) {
         </h1>
       </div>
 
-      {/* BAGIAN KANAN */}
+      {/* TAHUN DI SISI KANAN */}
       <div
         className="year-pill"
         style={{
