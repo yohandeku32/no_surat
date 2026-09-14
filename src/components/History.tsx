@@ -5,8 +5,10 @@ import {
   X,
   Check,
   AlertTriangle,
+  FileSpreadsheet,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import * as XLSX from 'xlsx'
 import {
   CATEGORIES,
   CLASSIFICATIONS,
@@ -191,7 +193,7 @@ export function History({
           type: 'success',
           title: 'Data Dihapus',
           message:
-            'Nomor surat berhasil dihapus dari riwayat.',
+            'Nomor surat berhasil dihapus dari database.',
         },
       }),
     )
@@ -208,12 +210,80 @@ export function History({
           type: 'success',
           title: 'Riwayat Dihapus',
           message:
-            'Seluruh riwayat nomor surat pada perangkat ini telah dihapus.',
+            'Seluruh riwayat nomor surat telah dihapus dari database.',
         },
       }),
     )
 
     closeModal()
+  }
+
+  function downloadExcel() {
+    if (!filtered.length) {
+      window.dispatchEvent(
+        new CustomEvent('si-nosurat:toast', {
+          detail: {
+            type: 'error',
+            title: 'Tidak Ada Data',
+            message:
+              'Tidak ada data penomoran yang dapat diunduh.',
+          },
+        }),
+      )
+      return
+    }
+
+    const exportRows = filtered.map((r, index) => ({
+      'No.': index + 1,
+      'Nomor Surat': r.number,
+      'Tanggal': r.date,
+      'Tahun': r.year,
+      'Kode Klasifikasi': r.classification,
+      'Kode Sekolah': r.schoolCode,
+      'Jenis Surat': r.category,
+      'Keterangan / Judul Surat': r.description,
+      'Nomor Urut': r.sequence,
+    }))
+
+    const worksheet = XLSX.utils.json_to_sheet(exportRows)
+
+    worksheet['!cols'] = [
+      { wch: 7 },
+      { wch: 34 },
+      { wch: 14 },
+      { wch: 10 },
+      { wch: 20 },
+      { wch: 18 },
+      { wch: 16 },
+      { wch: 42 },
+      { wch: 12 },
+    ]
+
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      'Riwayat Surat',
+    )
+
+    const yearLabel =
+      selectedYear === 'all'
+        ? 'semua-tahun'
+        : selectedYear
+
+    const safeQuery = query
+      .trim()
+      .replace(/[^a-z0-9-_]+/gi, '-')
+      .replace(/^-+|-+$/g, '')
+
+    const filename =
+      `riwayat-penomoran-${yearLabel}` +
+      `${safeQuery ? `-${safeQuery}` : ''}.xlsx`
+
+    XLSX.writeFile(
+      workbook,
+      filename,
+    )
   }
 
   return (
@@ -267,6 +337,15 @@ export function History({
                   }
                 />
               </div>
+
+              <button
+                className="secondary-button"
+                onClick={downloadExcel}
+                disabled={!filtered.length}
+              >
+                <FileSpreadsheet size={16} />
+                Download Excel
+              </button>
 
               <button
                 className="danger-button"
