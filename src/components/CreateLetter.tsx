@@ -1,6 +1,20 @@
 import { useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
-import { Save, RotateCcw, Copy, CheckCircle2, AlertCircle, X } from 'lucide-react'
+import {
+  Save,
+  RotateCcw,
+  Copy,
+  CheckCircle2,
+  AlertCircle,
+  X,
+  CalendarDays,
+  FolderOpen,
+  Building2,
+  Tag,
+  Hash,
+  FileText,
+  Lightbulb,
+} from 'lucide-react'
 import {
   CATEGORIES,
   CLASSIFICATIONS,
@@ -214,195 +228,636 @@ export function CreateLetter({ records, onSaved }: Props) {
   return (
     <>
       <section
-      className="page-stack"
-      style={{
-        margin: '20px 24px 28px 24px',
-      }}
-    >
-        <div className="welcome-row">
+        className="page-stack"
+        style={{
+          margin: '20px 24px 28px 24px',
+        }}
+      >
+        <div
+          className="welcome-row"
+          style={{
+            marginBottom: '22px',
+          }}
+        >
           <div>
-            <h2>Buat Nomor Surat</h2>
+            <h2
+              style={{
+                marginBottom: '6px',
+                letterSpacing: '-0.3px',
+              }}
+            >
+              Buat Nomor Surat
+            </h2>
             <p>
-              Nomor urut otomatis mengikuti nomor terakhir pada
-              kode jenis surat yang dipilih.
+              Nomor urut otomatis mengikuti nomor terakhir pada kode
+              jenis surat yang dipilih.
             </p>
           </div>
         </div>
 
-        <div className="two-column create-layout" style={{ alignItems: 'start' }}>
-          <div className="card" style={{ border: '1px solid #d6dee8', boxShadow: '0 10px 30px rgba(15,23,42,.07)', borderRadius: '18px', overflow: 'hidden' }}>
-            <div className="card-header" style={{ padding: '20px 22px', background: 'linear-gradient(180deg,#f8fafc 0%,#ffffff 100%)', borderBottom: '1px solid #e2e8f0' }}>
+        <div
+          className="two-column create-layout"
+          style={{
+            alignItems: 'start',
+            gap: '18px',
+          }}
+        >
+          {/* FORM DATA SURAT */}
+          <div
+            className="card"
+            style={{
+              border: '1px solid #d7e2f0',
+              boxShadow: '0 12px 30px rgba(15,23,42,.07)',
+              borderRadius: '18px',
+              overflow: 'hidden',
+              background: '#ffffff',
+            }}
+          >
+            <div
+              style={{
+                padding: '20px 22px',
+                background:
+                  'linear-gradient(135deg, #edf5ff 0%, #f7fbff 58%, #ffffff 100%)',
+                borderBottom: '1px solid #dbeafe',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '13px',
+              }}
+            >
+              <div
+                style={{
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '14px',
+                  background: '#dbeafe',
+                  color: '#2563eb',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <FileText size={23} strokeWidth={2.2} />
+              </div>
+
               <div>
-                <h3 style={{ marginBottom: '5px' }}>Data Surat</h3>
-                <p>Isi data yang diperlukan.</p>
+                <h3 style={{ margin: '0 0 4px', color: '#172033' }}>
+                  Form Data Surat
+                </h3>
+                <p style={{ margin: 0, color: '#62748a' }}>
+                  Lengkapi informasi surat untuk menghasilkan nomor otomatis.
+                </p>
               </div>
             </div>
 
-            <div className="form-grid">
-              <Field label="Tanggal Surat">
+            <div style={{ padding: '22px' }}>
+              <div className="form-grid">
+                <Field label="Tanggal Surat">
+                  <div style={{ position: 'relative' }}>
+                    <span
+                      style={{
+                        position: 'absolute',
+                        left: '13px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: '34px',
+                        height: '34px',
+                        borderRadius: '10px',
+                        background: '#eaf2ff',
+                        color: '#2563eb',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        pointerEvents: 'none',
+                        zIndex: 1,
+                      }}
+                    >
+                      <CalendarDays size={16} />
+                    </span>
+                    <input
+                      type="date"
+                      value={date}
+                      onChange={(e) => handleDateChange(e.target.value)}
+                      style={{ paddingLeft: '58px' }}
+                    />
+                  </div>
+                </Field>
+
+                <Field label="Kode Klasifikasi">
+                  <div style={{ position: 'relative' }}>
+                    <span
+                      style={{
+                        position: 'absolute',
+                        left: '13px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: '34px',
+                        height: '34px',
+                        borderRadius: '10px',
+                        background: '#f2eaff',
+                        color: '#7c3aed',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        pointerEvents: 'none',
+                        zIndex: 1,
+                      }}
+                    >
+                      <FolderOpen size={16} />
+                    </span>
+                    <select
+                      value={classification}
+                      onChange={(e) => setClassification(e.target.value)}
+                      style={{ paddingLeft: '58px' }}
+                    >
+                      {CLASSIFICATIONS.map((x) => (
+                        <option key={x.value} value={x.value}>
+                          {x.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </Field>
+
+                <Field label="Kode Sekolah">
+                  <div style={{ position: 'relative' }}>
+                    <span
+                      style={{
+                        position: 'absolute',
+                        left: '13px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: '34px',
+                        height: '34px',
+                        borderRadius: '10px',
+                        background: '#e8f9ef',
+                        color: '#16a34a',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        pointerEvents: 'none',
+                        zIndex: 1,
+                      }}
+                    >
+                      <Building2 size={16} />
+                    </span>
+                    <input
+                      value={schoolCode}
+                      onChange={(e) => setSchoolCode(e.target.value)}
+                      style={{ paddingLeft: '58px' }}
+                    />
+                  </div>
+                </Field>
+
+                <Field label="Kode Jenis Surat">
+                  <div style={{ position: 'relative' }}>
+                    <span
+                      style={{
+                        position: 'absolute',
+                        left: '13px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: '34px',
+                        height: '34px',
+                        borderRadius: '10px',
+                        background: '#fff2df',
+                        color: '#ea580c',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        pointerEvents: 'none',
+                        zIndex: 1,
+                      }}
+                    >
+                      <Tag size={16} />
+                    </span>
+                    <select
+                      value={category}
+                      onChange={(e) => handleCategoryChange(e.target.value)}
+                      style={{ paddingLeft: '58px' }}
+                    >
+                      {CATEGORIES.map((x) => (
+                        <option key={x.value} value={x.value}>
+                          {x.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </Field>
+              </div>
+
+              {/* NOMOR URUT */}
+              <label
+                style={{
+                  display: 'block',
+                  marginTop: '20px',
+                  marginBottom: '8px',
+                }}
+              >
+                Nomor Urut{' '}
+                <span className="muted">(otomatis, boleh diubah manual)</span>
+              </label>
+
+              <div
+                className="sequence-wrap"
+                style={{
+                  marginTop: '0',
+                  padding: '12px',
+                  border: '1px solid #f3c7d2',
+                  borderRadius: '14px',
+                  background: '#fff5f7',
+                  boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.9)',
+                }}
+              >
+                <div
+                  style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '11px',
+                    background: '#ffe5eb',
+                    color: '#db2777',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  <Hash size={19} strokeWidth={2.4} />
+                </div>
+
                 <input
-                  type="date"
-                  value={date}
+                  value={String(effectiveSequence).padStart(3, '0')}
                   onChange={(e) =>
-                    handleDateChange(e.target.value)
+                    setSequence(e.target.value.replace(/\D/g, ''))
                   }
                 />
-              </Field>
 
-              <Field label="Kode Klasifikasi">
-                <select
-                  value={classification}
-                  onChange={(e) =>
-                    setClassification(e.target.value)
-                  }
+                <button
+                  type="button"
+                  className="square-button"
+                  title="Kembali ke nomor berikutnya"
+                  onClick={() => setSequence(String(next))}
                 >
-                  {CLASSIFICATIONS.map((x) => (
-                    <option
-                      key={x.value}
-                      value={x.value}
-                    >
-                      {x.label}
-                    </option>
-                  ))}
-                </select>
-              </Field>
+                  <RotateCcw size={16} />
+                </button>
+              </div>
 
-              <Field label="Kode Sekolah">
-                <input
-                  value={schoolCode}
-                  onChange={(e) =>
-                    setSchoolCode(e.target.value)
-                  }
+              <div
+                className="helper"
+                style={{
+                  marginTop: '10px',
+                  padding: '13px 14px',
+                  borderRadius: '12px',
+                  background: '#f5f3ff',
+                  border: '1px solid #e9ddff',
+                  color: '#5b4a83',
+                }}
+              >
+                Nomor berikutnya untuk <b>{category}</b> adalah{' '}
+                <b>{String(next).padStart(3, '0')}</b>.
+                <br />
+                Bila Anda pernah mengisi nomor manual, penyimpanan berikutnya
+                akan otomatis melanjutkan dari nomor tersebut.
+                <br />
+                Saat <b>Kode Jenis Surat</b> diganti, sistem akan menyesuaikan
+                nomor urut untuk jenis surat tersebut.
+              </div>
+
+              {/* KETERANGAN */}
+              <label
+                style={{
+                  display: 'block',
+                  marginTop: '20px',
+                  marginBottom: '8px',
+                }}
+              >
+                Keterangan / Judul Surat
+              </label>
+
+              <div style={{ position: 'relative' }}>
+                <span
+                  style={{
+                    position: 'absolute',
+                    left: '13px',
+                    top: '13px',
+                    width: '34px',
+                    height: '34px',
+                    borderRadius: '10px',
+                    background: '#e7f9f0',
+                    color: '#0f9f6e',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    pointerEvents: 'none',
+                    zIndex: 1,
+                  }}
+                >
+                  <FileText size={16} />
+                </span>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Contoh: Surat Keputusan Pembagian Tugas Guru"
+                  maxLength={200}
+                  style={{
+                    width: '100%',
+                    minHeight: '108px',
+                    resize: 'vertical',
+                    padding: '15px 15px 15px 58px',
+                    boxSizing: 'border-box',
+                  }}
                 />
-              </Field>
+              </div>
 
-              <Field label="Kode Jenis Surat">
-                <select
-                  value={category}
-                  onChange={(e) =>
-                    handleCategoryChange(e.target.value)
-                  }
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  marginTop: '5px',
+                  fontSize: '12px',
+                  color: '#94a3b8',
+                }}
+              >
+                {description.length}/200
+              </div>
+
+              <div
+                className="form-actions"
+                style={{
+                  marginTop: '18px',
+                  padding: '14px',
+                  borderRadius: '14px',
+                  background: '#f3f8ff',
+                  border: '1px solid #dbeafe',
+                  gap: '10px',
+                }}
+              >
+                <button className="secondary-button" onClick={reset}>
+                  <RotateCcw size={16} />
+                  Reset Form
+                </button>
+
+                <button
+                  className="secondary-button"
+                  onClick={copyNumber}
+                  style={{
+                    borderColor: '#93c5fd',
+                    color: '#2563eb',
+                  }}
                 >
-                  {CATEGORIES.map((x) => (
-                    <option
-                      key={x.value}
-                      value={x.value}
-                    >
-                      {x.label}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-            </div>
+                  <Copy size={16} />
+                  Salin Nomor
+                </button>
 
-            <label>
-              Nomor Urut{' '}
-              <span className="muted">
-                (otomatis, boleh diubah manual)
-              </span>
-            </label>
-
-            <div style={{ marginTop: '8px', padding: '16px', border: '1px solid #cbd5e1', borderRadius: '14px', background: '#f8fafc', boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.7)' }} className="sequence-wrap">
-              <input
-                value={String(effectiveSequence).padStart(
-                  3,
-                  '0',
-                )}
-                onChange={(e) =>
-                  setSequence(
-                    e.target.value.replace(/\D/g, ''),
-                  )
-                }
-              />
-
-              <button
-                type="button"
-                className="square-button"
-                title="Kembali ke nomor berikutnya"
-                onClick={() =>
-                  setSequence(String(next))
-                }
-              >
-                <RotateCcw size={16} />
-              </button>
-            </div>
-
-            <div className="helper" style={{ marginTop: '10px', padding: '12px 14px', borderRadius: '12px', background: '#f1f5f9', border: '1px solid #e2e8f0' }}>
-              Nomor berikutnya untuk{' '}
-              <b>{category}</b> adalah{' '}
-              <b>
-                {String(next).padStart(3, '0')}
-              </b>
-              .
-              <br />
-              Bila Anda pernah mengisi nomor manual,
-              penyimpanan berikutnya akan otomatis
-              melanjutkan dari nomor tersebut.
-              <br />
-              Saat <b>Kode Jenis Surat</b> diganti,
-              sistem akan menyesuaikan nomor urut untuk
-              jenis surat tersebut.
-            </div>
-
-            <label>Keterangan / Judul Surat</label>
-
-            <input
-              value={description}
-              onChange={(e) =>
-                setDescription(e.target.value)
-              }
-              placeholder="Contoh: Surat Keputusan Pembagian Tugas Guru"
-            />
-
-            <div className="form-actions">
-              <button
-                className="secondary-button"
-                onClick={reset}
-              >
-                Reset
-              </button>
-
-              <button
-                className="primary-button"
-                onClick={save}
-              >
-                <Save size={17} />
-                Simpan Nomor Surat
-              </button>
+                <button className="primary-button" onClick={save}>
+                  <Save size={17} />
+                  Simpan Nomor Surat
+                </button>
+              </div>
             </div>
           </div>
 
-          <div className="card" style={{ border: '1px solid #cbd5e1', boxShadow: '0 12px 34px rgba(15,23,42,.08)', borderRadius: '18px', overflow: 'hidden', position: 'sticky', top: '20px' }}>
-            <div className="card-header" style={{ padding: '20px 22px', background: 'linear-gradient(180deg,#f8fafc 0%,#ffffff 100%)', borderBottom: '1px solid #e2e8f0' }}>
-              <div>
-                <h3 style={{ marginBottom: '5px' }}>Pratinjau</h3>
-                <p>
-                  Nomor akan terbentuk secara langsung.
-                </p>
+          {/* PREVIEW */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '14px',
+              position: 'sticky',
+              top: '20px',
+            }}
+          >
+            <div
+              className="card"
+              style={{
+                border: '1px solid #ccefe0',
+                boxShadow: '0 12px 34px rgba(15,23,42,.07)',
+                borderRadius: '18px',
+                overflow: 'hidden',
+                background: '#ffffff',
+              }}
+            >
+              <div
+                style={{
+                  padding: '20px 22px',
+                  background:
+                    'linear-gradient(135deg, #ecfbf4 0%, #f5fffa 60%, #ffffff 100%)',
+                  borderBottom: '1px solid #d7f4e7',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '12px',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '46px',
+                      height: '46px',
+                      borderRadius: '14px',
+                      background: '#d9f8e8',
+                      color: '#0f9f6e',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <CheckCircle2 size={23} strokeWidth={2.2} />
+                  </div>
+
+                  <div>
+                    <h3 style={{ margin: '0 0 4px', color: '#172033' }}>
+                      Preview Nomor Surat
+                    </h3>
+                    <p style={{ margin: 0, color: '#62748a' }}>
+                      Nomor akan terbentuk secara langsung.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  className="icon-button"
+                  onClick={copyNumber}
+                  title="Salin nomor"
+                >
+                  <Copy size={17} />
+                </button>
               </div>
 
-              <button
-                className="icon-button"
-                onClick={copyNumber}
-                title="Salin nomor"
+              <div style={{ padding: '20px 22px 22px' }}>
+                <div
+                  className="preview-box"
+                  style={{
+                    marginTop: 0,
+                    padding: '18px',
+                    border: '1px solid #bde8d6',
+                    borderRadius: '16px',
+                    background:
+                      'linear-gradient(135deg, #effcf5 0%, #e8f9f1 100%)',
+                    boxShadow: '0 6px 18px rgba(15,23,42,.04)',
+                  }}
+                >
+                  <span
+                    style={{
+                      color: '#0f9f6e',
+                      fontWeight: 700,
+                    }}
+                  >
+                    NOMOR SURAT
+                  </span>
+
+                  <strong
+                    style={{
+                      display: 'block',
+                      marginTop: '8px',
+                      fontSize: '20px',
+                      lineHeight: '1.35',
+                      color: '#123b2c',
+                      wordBreak: 'break-word',
+                    }}
+                  >
+                    {number}
+                  </strong>
+
+                  <p style={{ marginBottom: 0 }}>
+                    {description || 'Belum ada keterangan'}
+                  </p>
+                </div>
+
+                <div style={{ marginTop: '16px', display: 'grid', gap: '0' }}>
+                  <PreviewRow
+                    icon={<CalendarDays size={16} />}
+                    label="Tanggal"
+                    value={date}
+                    background="#eaf2ff"
+                    color="#2563eb"
+                  />
+                  <PreviewRow
+                    icon={<FolderOpen size={16} />}
+                    label="Klasifikasi"
+                    value={classification}
+                    background="#f2eaff"
+                    color="#7c3aed"
+                  />
+                  <PreviewRow
+                    icon={<Building2 size={16} />}
+                    label="Kode Sekolah"
+                    value={schoolCode || SCHOOL_DEFAULT}
+                    background="#e8f9ef"
+                    color="#16a34a"
+                  />
+                  <PreviewRow
+                    icon={<Tag size={16} />}
+                    label="Jenis Surat"
+                    value={category}
+                    background="#fff2df"
+                    color="#ea580c"
+                  />
+                  <PreviewRow
+                    icon={<Hash size={16} />}
+                    label="Nomor Urut"
+                    value={String(effectiveSequence).padStart(3, '0')}
+                    background="#ffe8ee"
+                    color="#db2777"
+                  />
+                  <PreviewRow
+                    icon={<CalendarDays size={16} />}
+                    label="Bulan (Romawi)"
+                    value={MONTH_ROMAN[dateObj.getMonth() + 1]}
+                    background="#fff4d8"
+                    color="#d97706"
+                  />
+                  <PreviewRow
+                    icon={<CalendarDays size={16} />}
+                    label="Tahun"
+                    value={String(year)}
+                    background="#eaf2ff"
+                    color="#2563eb"
+                    last
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* TIPS */}
+            <div
+              className="card"
+              style={{
+                border: '1px solid #f6dfae',
+                boxShadow: '0 10px 26px rgba(15,23,42,.05)',
+                borderRadius: '18px',
+                overflow: 'hidden',
+                background:
+                  'linear-gradient(145deg, #fff9eb 0%, #fffdf7 100%)',
+              }}
+            >
+              <div
+                style={{
+                  padding: '17px 18px',
+                  display: 'flex',
+                  gap: '11px',
+                  alignItems: 'center',
+                }}
               >
-                <Copy size={17} />
-              </button>
-            </div>
+                <div
+                  style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '11px',
+                    background: '#fff0c8',
+                    color: '#d97706',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  <Lightbulb size={18} />
+                </div>
 
-            <div className="preview-box" style={{ marginTop: '20px', padding: '22px', border: '1px solid #cbd5e1', borderRadius: '16px', background: '#f8fafc', boxShadow: '0 6px 18px rgba(15,23,42,.05)' }}>
-              <span>NOMOR</span>
+                <div>
+                  <h4 style={{ margin: 0, color: '#5d430d' }}>
+                    Tips Pengisian
+                  </h4>
+                  <p
+                    style={{
+                      margin: '2px 0 0',
+                      fontSize: '12px',
+                      color: '#8b6a2c',
+                    }}
+                  >
+                    Gunakan alur berikut agar penomoran tetap rapi.
+                  </p>
+                </div>
+              </div>
 
-              <strong>{number}</strong>
-
-              <p>
-                {description || 'Belum ada keterangan'}
-              </p>
-            </div>
-
-            <div className="format-help" style={{ marginTop: '14px', padding: '12px 14px', border: '1px solid #e2e8f0', borderRadius: '12px', background: '#f8fafc' }}>
-              <b>Format:</b> Klasifikasi / Nomor Urut /
-              Kode Sekolah / Jenis Surat / Bulan / Tahun
+              <div
+                style={{
+                  padding: '0 18px 18px',
+                  display: 'grid',
+                  gap: '11px',
+                }}
+              >
+                <Tip number="1" text="Pilih tanggal dan jenis surat sesuai kebutuhan." />
+                <Tip
+                  number="2"
+                  text="Nomor urut terisi otomatis berdasarkan tahun dan jenis surat."
+                />
+                <Tip
+                  number="3"
+                  text="Anda boleh mengubah nomor urut secara manual."
+                />
+                <Tip
+                  number="4"
+                  text="Isi keterangan dengan jelas lalu simpan."
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -582,6 +1037,111 @@ export function CreateLetter({ records, onSaved }: Props) {
         </div>
       )}
     </>
+  )
+}
+
+
+function PreviewRow({
+  icon,
+  label,
+  value,
+  background,
+  color,
+  last = false,
+}: {
+  icon: ReactNode
+  label: string
+  value: string
+  background: string
+  color: string
+  last?: boolean
+}) {
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '34px 1fr auto',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '9px 0',
+        borderBottom: last ? 'none' : '1px solid #edf1f5',
+      }}
+    >
+      <span
+        style={{
+          width: '34px',
+          height: '34px',
+          borderRadius: '10px',
+          background,
+          color,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {icon}
+      </span>
+
+      <span
+        style={{
+          color: '#607086',
+          fontSize: '13px',
+        }}
+      >
+        {label}
+      </span>
+
+      <strong
+        style={{
+          color: '#1f3047',
+          fontSize: '13px',
+          textAlign: 'right',
+          wordBreak: 'break-word',
+        }}
+      >
+        {value}
+      </strong>
+    </div>
+  )
+}
+
+function Tip({ number, text }: { number: string; text: string }) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+      }}
+    >
+      <span
+        style={{
+          width: '26px',
+          height: '26px',
+          minWidth: '26px',
+          borderRadius: '50%',
+          background: '#f59e0b',
+          color: '#ffffff',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '12px',
+          fontWeight: 800,
+        }}
+      >
+        {number}
+      </span>
+
+      <span
+        style={{
+          fontSize: '12px',
+          lineHeight: '1.5',
+          color: '#69552e',
+        }}
+      >
+        {text}
+      </span>
+    </div>
   )
 }
 
