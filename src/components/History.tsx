@@ -271,7 +271,12 @@ export function History({
 
   return (
     <>
-      <section className="page-stack">
+      <section
+      className="page-stack"
+      style={{
+        margin: '20px 24px 28px 24px',
+      }}
+    >
         <div className="welcome-row">
           <div>
             <h2>Riwayat Penomoran</h2>
