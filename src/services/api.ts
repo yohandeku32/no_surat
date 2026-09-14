@@ -1,7 +1,8 @@
 import type { LetterRecord } from '../types'
 
 // GANTI dengan URL Web App Google Apps Script Anda.
-export const API_URL = 'https://script.google.com/macros/s/AKfycbxdrvVbKTCdClyA9BcCSXx-I-iRhEQUJOILQM_r4kiMJzuVhNnf0Oxdg2aORtosjsin4w/exec'
+export const API_URL =
+  'https://script.google.com/macros/s/AKfycbxdrvVbKTCdClyA9BcCSXx-I-iRhEQUJOILQM_r4kiMJzuVhNnf0Oxdg2aORtosjsin4w/exec'
 
 type ApiResponse<T> = {
   success: boolean
@@ -13,8 +14,10 @@ type ApiResponse<T> = {
 }
 
 function ensureConfigured() {
-  if (!API_URL || API_URL === 'https://script.google.com/macros/s/AKfycbxdrvVbKTCdClyA9BcCSXx-I-iRhEQUJOILQM_r4kiMJzuVhNnf0Oxdg2aORtosjsin4w/exec') {
-    throw new Error('URL Google Apps Script belum diatur di src/services/api.ts.')
+  if (!API_URL || !API_URL.endsWith('/exec')) {
+    throw new Error(
+      'URL Web App Google Apps Script belum diatur dengan benar di src/services/api.ts.',
+    )
   }
 }
 
