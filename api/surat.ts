@@ -3,6 +3,8 @@ import { connect } from '@tidbcloud/serverless'
 export const runtime = 'nodejs'
 
 const ALLOWED_ORIGINS = new Set([
+  'https://suratsdk.my.id',
+  'https://www.suratsdk.my.id',
   'https://yohandeku32.github.io',
   'http://localhost:5173',
   'http://localhost:4173',
