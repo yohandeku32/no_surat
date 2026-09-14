@@ -63,7 +63,7 @@ export function Dashboard({ records, onNavigate }: Props) {
     <section
       className="page-stack"
       style={{
-        margin: '8px 12px 24px 12px',
+        margin: '20px 24px 28px 24px',
       }}
     >
       {/* HEADER */}
