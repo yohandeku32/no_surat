@@ -48,44 +48,73 @@ export function Sidebar({
         flexDirection: 'column',
       }}
     >
-      {/* LOGO YAYASAN */}
-      <div
-        style={{
-          padding: '22px 12px 18px',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <img
-          src="https://sistemyaswarikak.com/sistem_accounting/asset/images/logo2.png"
-          alt="Logo Yayasan Swasti Sari KAK"
-          style={{
-            width: '95px',
-            height: '95px',
-            objectFit: 'contain',
-            display: 'block',
-          }}
-        />
-      </div>
-
       {/* BRAND */}
       <div
         className="brand"
         style={{
-          paddingTop: '0',
-          paddingBottom: '24px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '13px',
+          padding: '28px 12px 25px',
         }}
       >
-        <div className="brand-mark">
-          <FileText size={20} />
+        {/* LOGO YAYASAN */}
+        <div
+          style={{
+            width: '52px',
+            height: '52px',
+            flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <img
+            src="https://sistemyaswarikak.com/sistem_accounting/asset/images/logo2.png"
+            alt="Logo Yayasan Swasti Sari KAK"
+            style={{
+              width: '52px',
+              height: '52px',
+              objectFit: 'contain',
+              display: 'block',
+            }}
+          />
         </div>
 
-        <div>
-          <strong>SI-NOSURAT</strong>
-          <span>Sistem Surat Sekolah</span>
+        {/* NAMA APLIKASI */}
+        <div
+          style={{
+            minWidth: 0,
+          }}
+        >
+          <strong
+            style={{
+              display: 'block',
+              fontSize: '20px',
+              lineHeight: 1.15,
+              color: '#ffffff',
+              fontWeight: 800,
+              letterSpacing: '-0.2px',
+            }}
+          >
+            SIPESURAT
+          </strong>
+
+          <span
+            style={{
+              display: 'block',
+              marginTop: '5px',
+              fontSize: '12px',
+              lineHeight: 1.3,
+              color: '#a9bfd4',
+            }}
+          >
+            Sistem Pengelolaan Surat Sekolah
+          </span>
         </div>
       </div>
 
+      {/* NAVIGASI */}
       <div className="nav-section-label">
         MENU UTAMA
       </div>
@@ -100,9 +129,7 @@ export function Sidebar({
             <button
               key={id}
               className={`nav-item ${
-                page === id
-                  ? 'active'
-                  : ''
+                page === id ? 'active' : ''
               }`}
               onClick={() =>
                 onNavigate(id)
@@ -137,7 +164,6 @@ export function Sidebar({
               borderRadius: '14px',
               padding: '16px',
               lineHeight: 1.55,
-              overflow: 'visible',
             }}
           >
             <div
@@ -146,7 +172,6 @@ export function Sidebar({
                 fontWeight: 800,
                 color: '#ffffff',
                 marginBottom: '7px',
-                whiteSpace: 'normal',
               }}
             >
               SDK ST. YOSEPH KUAPUTU
@@ -157,7 +182,6 @@ export function Sidebar({
                 fontSize: '12px',
                 color: '#bfd0e4',
                 marginBottom: '4px',
-                whiteSpace: 'normal',
               }}
             >
               Oemasi, Nekamese
@@ -167,8 +191,7 @@ export function Sidebar({
               style={{
                 fontSize: '13px',
                 color: '#f1f5f9',
-                whiteSpace: 'normal',
-                wordBreak: 'normal',
+                lineHeight: 1.55,
               }}
             >
               Kabupaten Kupang,
