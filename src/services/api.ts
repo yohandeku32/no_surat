@@ -1,12 +1,5 @@
 import type { LetterRecord } from '../types'
 
-/**
- * URL API backend Vercel.
- *
- * Untuk GitHub Pages, set environment variable VITE_API_URL saat build.
- * Contoh:
- * VITE_API_URL=https://nama-project-anda.vercel.app/api/surat
- */
 export const API_URL =
   'https://nosurat.vercel.app/api/surat'
 
