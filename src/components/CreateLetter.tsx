@@ -229,7 +229,10 @@ export function CreateLetter({ records, onSaved }: Props) {
       <section
         className="page-stack create-page"
         style={{
-          margin: '20px 24px 28px 24px',
+          width: 'calc(100% - 48px)',
+          maxWidth: '1600px',
+          margin: '20px auto 28px',
+          boxSizing: 'border-box',
         }}
       >
         <div
@@ -259,8 +262,9 @@ export function CreateLetter({ records, onSaved }: Props) {
           style={{
             alignItems: 'start',
             gap: '20px',
+            width: '100%',
             gridTemplateColumns:
-              'minmax(0, 1.35fr) minmax(320px, 0.65fr)',
+              'minmax(0, 1.65fr) minmax(420px, 0.95fr)',
           }}
         >
           {/* FORM DATA SURAT */}
@@ -694,7 +698,7 @@ export function CreateLetter({ records, onSaved }: Props) {
             <div style={{ padding: '18px' }}>
               <div
                 style={{
-                  padding: '20px 16px',
+                  padding: '22px 18px',
                   border: '1px solid #bde8d6',
                   borderRadius: '16px',
                   background:
@@ -719,10 +723,12 @@ export function CreateLetter({ records, onSaved }: Props) {
                 <strong
                   style={{
                     display: 'block',
-                    fontSize: '23px',
-                    lineHeight: '1.45',
+                    fontSize: 'clamp(18px, 1.45vw, 25px)',
+                    lineHeight: '1.35',
                     color: '#123b2c',
-                    wordBreak: 'break-word',
+                    whiteSpace: 'normal',
+                    overflowWrap: 'break-word',
+                    wordBreak: 'normal',
                   }}
                 >
                   {number}
@@ -747,13 +753,78 @@ export function CreateLetter({ records, onSaved }: Props) {
             min-width: 0;
           }
 
-          @media (max-height: 800px) {
+          .create-layout {
+            width: 100%;
+          }
+
+          .create-layout > .card:first-child,
+          .create-layout > .card:last-child {
+            min-width: 0;
+          }
+
+          .create-layout > .card:last-child {
+            width: 100%;
+          }
+
+          .create-layout > .card:last-child strong {
+            font-size: clamp(18px, 1.45vw, 25px) !important;
+            line-height: 1.35 !important;
+            letter-spacing: -0.25px;
+            white-space: normal;
+            overflow-wrap: break-word;
+            word-break: normal;
+          }
+
+          @media (min-width: 1500px) {
+            .create-layout {
+              gap: 24px !important;
+              grid-template-columns: minmax(0, 1.72fr) minmax(460px, 0.9fr) !important;
+            }
+          }
+
+          @media (max-width: 1150px) {
+            .create-page {
+              width: calc(100% - 32px) !important;
+            }
+
+            .create-layout {
+              grid-template-columns: minmax(0, 1fr) minmax(360px, 0.8fr) !important;
+              gap: 14px !important;
+            }
+
+            .create-layout > .card:last-child strong {
+              font-size: 18px !important;
+            }
+          }
+
+          @media (max-width: 900px) {
+            .create-page {
+              width: calc(100% - 24px) !important;
+              margin-left: 12px !important;
+              margin-right: 12px !important;
+            }
+
+            .create-layout {
+              grid-template-columns: 1fr !important;
+            }
+
+            .create-layout > .card:last-child {
+              position: static !important;
+              top: auto !important;
+            }
+          }
+
+          @media (max-height: 800px) and (min-width: 901px) {
             .create-layout {
               gap: 14px !important;
             }
 
             .create-layout .form-grid {
               gap: 12px !important;
+            }
+
+            .create-layout > .card:last-child strong {
+              font-size: 18px !important;
             }
           }
 
