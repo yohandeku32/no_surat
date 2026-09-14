@@ -40,8 +40,42 @@ export function Sidebar({
   onNavigate,
 }: Props) {
   return (
-    <aside className="sidebar">
-      <div className="brand">
+    <aside
+      className="sidebar"
+      style={{
+        width: '270px',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      {/* LOGO YAYASAN */}
+      <div
+        style={{
+          padding: '22px 12px 18px',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <img
+          src="https://sistemyaswarikak.com/sistem_accounting/asset/images/logo2.png"
+          alt="Logo Yayasan Swasti Sari KAK"
+          style={{
+            width: '95px',
+            height: '95px',
+            objectFit: 'contain',
+            display: 'block',
+          }}
+        />
+      </div>
+
+      {/* BRAND */}
+      <div
+        className="brand"
+        style={{
+          paddingTop: '0',
+          paddingBottom: '24px',
+        }}
+      >
         <div className="brand-mark">
           <FileText size={20} />
         </div>
@@ -81,19 +115,67 @@ export function Sidebar({
         )}
       </nav>
 
-      <div className="sidebar-bottom">
-        <div className="school-badge">
-          <strong>
-            SDK ST. YOSEPH KUAPUTU
-          </strong>
+      {/* INFORMASI SEKOLAH */}
+      <div
+        className="sidebar-bottom"
+        style={{
+          marginTop: 'auto',
+          paddingTop: '18px',
+        }}
+      >
+        <div
+          style={{
+            borderTop:
+              '1px solid rgba(255,255,255,.10)',
+            paddingTop: '18px',
+          }}
+        >
+          <div
+            style={{
+              background:
+                'rgba(255,255,255,.07)',
+              borderRadius: '14px',
+              padding: '16px',
+              lineHeight: 1.55,
+              overflow: 'visible',
+            }}
+          >
+            <div
+              style={{
+                fontSize: '13px',
+                fontWeight: 800,
+                color: '#ffffff',
+                marginBottom: '7px',
+                whiteSpace: 'normal',
+              }}
+            >
+              SDK ST. YOSEPH KUAPUTU
+            </div>
 
-          <span>
-            Jl. ... Kuaputu
-          </span>
+            <div
+              style={{
+                fontSize: '12px',
+                color: '#bfd0e4',
+                marginBottom: '4px',
+                whiteSpace: 'normal',
+              }}
+            >
+              Oemasi, Nekamese
+            </div>
 
-          <small>
-            Kabupaten Kupang, Nusa Tenggara Timur
-          </small>
+            <div
+              style={{
+                fontSize: '13px',
+                color: '#f1f5f9',
+                whiteSpace: 'normal',
+                wordBreak: 'normal',
+              }}
+            >
+              Kabupaten Kupang,
+              <br />
+              Nusa Tenggara Timur
+            </div>
+          </div>
         </div>
       </div>
     </aside>
