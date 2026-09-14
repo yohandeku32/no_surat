@@ -10,7 +10,7 @@ export function Dashboard({ records, onNavigate }: Props) {
   const monthCount = current.filter(r => Number(r.date.slice(5,7))===month).length
   const latest = [...current].sort((a,b)=>b.date.localeCompare(a.date)||b.sequence-a.sequence).slice(0,5)
   return <section className="page-stack">
-    <div className="welcome-row"><div><h2>Selamat datang 👋</h2><p>Kelola penomoran surat sekolah dengan cepat dan rapi.</p></div><button className="primary-button" onClick={()=>onNavigate('buat')}><FilePlus2 size={17}/> Buat Nomor Surat</button></div>
+    <div className="welcome-row"><div><h2>Selamat datang </h2><p>Kelola penomoran surat sekolah dengan cepat dan rapi.</p></div><button className="primary-button" onClick={()=>onNavigate('buat')}><FilePlus2 size={17}/> Buat Nomor Surat</button></div>
     <div className="stats-grid">
       <Stat icon={<FilePlus2/>} value={current.length} label="Surat tahun berjalan" />
       <Stat icon={<Hash/>} value={String(next).padStart(3,'0')} label="Nomor berikutnya" />
