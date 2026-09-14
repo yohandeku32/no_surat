@@ -334,6 +334,7 @@ export function CreateLetter({ records, onSaved }: Props) {
                       <CalendarDays size={16} />
                     </span>
                     <input
+                      className="si-field-control"
                       type="date"
                       value={date}
                       onChange={(e) => handleDateChange(e.target.value)}
@@ -365,6 +366,7 @@ export function CreateLetter({ records, onSaved }: Props) {
                       <FolderOpen size={16} />
                     </span>
                     <select
+                      className="si-field-control"
                       value={classification}
                       onChange={(e) => setClassification(e.target.value)}
                       style={{ paddingLeft: '58px' }}
@@ -401,6 +403,7 @@ export function CreateLetter({ records, onSaved }: Props) {
                       <Building2 size={16} />
                     </span>
                     <input
+                      className="si-field-control"
                       value={schoolCode}
                       onChange={(e) => setSchoolCode(e.target.value)}
                       style={{ paddingLeft: '58px' }}
@@ -431,6 +434,7 @@ export function CreateLetter({ records, onSaved }: Props) {
                       <Tag size={16} />
                     </span>
                     <select
+                      className="si-field-control"
                       value={category}
                       onChange={(e) => handleCategoryChange(e.target.value)}
                       style={{ paddingLeft: '58px' }}
@@ -485,6 +489,7 @@ export function CreateLetter({ records, onSaved }: Props) {
                 </div>
 
                 <input
+                  className="si-sequence-input"
                   value={String(effectiveSequence).padStart(3, '0')}
                   onChange={(e) =>
                     setSequence(e.target.value.replace(/\D/g, ''))
@@ -554,6 +559,7 @@ export function CreateLetter({ records, onSaved }: Props) {
                   <FileText size={16} />
                 </span>
                 <textarea
+                  className="si-field-control si-textarea-control"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Contoh: Surat Keputusan Pembagian Tugas Guru"
@@ -724,6 +730,49 @@ export function CreateLetter({ records, onSaved }: Props) {
           </div>
         </div>
       </section>
+
+      <style>
+        {`
+          .si-field-control,
+          .si-sequence-input,
+          .si-textarea-control {
+            background: #f8fbff !important;
+            border: 1.5px solid #b8c7da !important;
+            color: #172033 !important;
+            box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.03) !important;
+            transition: border-color .18s ease, box-shadow .18s ease, background .18s ease !important;
+          }
+
+          .si-field-control:hover,
+          .si-sequence-input:hover,
+          .si-textarea-control:hover {
+            border-color: #94a7bf !important;
+            background: #f5f9ff !important;
+          }
+
+          .si-field-control:focus,
+          .si-sequence-input:focus,
+          .si-textarea-control:focus {
+            outline: none !important;
+            border-color: #3b82f6 !important;
+            background: #ffffff !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.13) !important;
+          }
+
+          .si-field-control::placeholder,
+          .si-sequence-input::placeholder,
+          .si-textarea-control::placeholder {
+            color: #8b9ab0 !important;
+          }
+
+          .si-field-control:disabled,
+          .si-sequence-input:disabled,
+          .si-textarea-control:disabled {
+            background: #eef3f8 !important;
+            color: #718096 !important;
+          }
+        `}
+      </style>
 
       {/* CUSTOM MODAL */}
       {modal.open && (
