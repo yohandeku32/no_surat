@@ -7,12 +7,6 @@ import {
   CheckCircle2,
   AlertCircle,
   X,
-  CalendarDays,
-  FolderOpen,
-  Building2,
-  Tag,
-  Hash,
-  FileText,
 } from 'lucide-react'
 import {
   CATEGORIES,
@@ -271,187 +265,79 @@ export function CreateLetter({ records, onSaved }: Props) {
           <div
             className="card"
             style={{
-              border: '1px solid #d7e2f0',
-              boxShadow: '0 12px 30px rgba(15,23,42,.07)',
-              borderRadius: '18px',
+              border: '1px solid #d5dde8',
+              boxShadow: '0 8px 24px rgba(15,23,42,.06)',
+              borderRadius: '14px',
               overflow: 'hidden',
               background: '#ffffff',
             }}
           >
             <div
               style={{
-                padding: '16px 20px',
-                background:
-                  'linear-gradient(135deg, #edf5ff 0%, #f7fbff 58%, #ffffff 100%)',
-                borderBottom: '1px solid #dbeafe',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '13px',
+                padding: '17px 20px',
+                background: '#f7f9fc',
+                borderBottom: '1px solid #e2e8f0',
               }}
             >
-              <div
+              <h3
                 style={{
-                  width: '46px',
-                  height: '46px',
-                  borderRadius: '14px',
-                  background: '#dbeafe',
-                  color: '#2563eb',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
+                  margin: '0 0 4px',
+                  color: '#172033',
+                  fontSize: '18px',
                 }}
               >
-                <FileText size={23} strokeWidth={2.2} />
-              </div>
-
-              <div>
-                <h3 style={{ margin: '0 0 4px', color: '#172033' }}>
-                  Form Data Surat
-                </h3>
-                <p style={{ margin: 0, color: '#62748a' }}>
-                  Lengkapi informasi surat untuk menghasilkan nomor otomatis.
-                </p>
-              </div>
+                Form Data Surat
+              </h3>
+              <p style={{ margin: 0, color: '#64748b', fontSize: '13px' }}>
+                Lengkapi data surat untuk menghasilkan nomor otomatis.
+              </p>
             </div>
 
-            <div style={{ padding: '18px 20px' }}>
+            <div style={{ padding: '17px 20px' }}>
               <div className="form-grid">
                 <Field label="Tanggal Surat">
-                  <div style={{ position: 'relative' }}>
-                    <span
-                      style={{
-                        position: 'absolute',
-                        left: '13px',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        width: '34px',
-                        height: '34px',
-                        borderRadius: '10px',
-                        background: '#eaf2ff',
-                        color: '#2563eb',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        pointerEvents: 'none',
-                        zIndex: 1,
-                      }}
-                    >
-                      <CalendarDays size={16} />
-                    </span>
-                    <input
-                      className="si-field-control"
-                      type="date"
-                      value={date}
-                      onChange={(e) => handleDateChange(e.target.value)}
-                      style={{ paddingLeft: '58px' }}
-                    />
-                  </div>
+                  <input
+                    className="si-field-control"
+                    type="date"
+                    value={date}
+                    onChange={(e) => handleDateChange(e.target.value)}
+                  />
                 </Field>
 
                 <Field label="Kode Klasifikasi">
-                  <div style={{ position: 'relative' }}>
-                    <span
-                      style={{
-                        position: 'absolute',
-                        left: '13px',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        width: '34px',
-                        height: '34px',
-                        borderRadius: '10px',
-                        background: '#f2eaff',
-                        color: '#7c3aed',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        pointerEvents: 'none',
-                        zIndex: 1,
-                      }}
-                    >
-                      <FolderOpen size={16} />
-                    </span>
-                    <select
-                      className="si-field-control"
-                      value={classification}
-                      onChange={(e) => setClassification(e.target.value)}
-                      style={{ paddingLeft: '58px' }}
-                    >
+                  <select
+                    className="si-field-control"
+                    value={classification}
+                    onChange={(e) => setClassification(e.target.value)}
+                  >
                       {CLASSIFICATIONS.map((x) => (
                         <option key={x.value} value={x.value}>
                           {x.label}
                         </option>
                       ))}
-                    </select>
-                  </div>
+                  </select>
                 </Field>
 
                 <Field label="Kode Sekolah">
-                  <div style={{ position: 'relative' }}>
-                    <span
-                      style={{
-                        position: 'absolute',
-                        left: '13px',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        width: '34px',
-                        height: '34px',
-                        borderRadius: '10px',
-                        background: '#e8f9ef',
-                        color: '#16a34a',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        pointerEvents: 'none',
-                        zIndex: 1,
-                      }}
-                    >
-                      <Building2 size={16} />
-                    </span>
-                    <input
-                      className="si-field-control"
-                      value={schoolCode}
-                      onChange={(e) => setSchoolCode(e.target.value)}
-                      style={{ paddingLeft: '58px' }}
-                    />
-                  </div>
+                  <input
+                    className="si-field-control"
+                    value={schoolCode}
+                    onChange={(e) => setSchoolCode(e.target.value)}
+                  />
                 </Field>
 
                 <Field label="Kode Jenis Surat">
-                  <div style={{ position: 'relative' }}>
-                    <span
-                      style={{
-                        position: 'absolute',
-                        left: '13px',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        width: '34px',
-                        height: '34px',
-                        borderRadius: '10px',
-                        background: '#fff2df',
-                        color: '#ea580c',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        pointerEvents: 'none',
-                        zIndex: 1,
-                      }}
-                    >
-                      <Tag size={16} />
-                    </span>
-                    <select
-                      className="si-field-control"
-                      value={category}
-                      onChange={(e) => handleCategoryChange(e.target.value)}
-                      style={{ paddingLeft: '58px' }}
-                    >
+                  <select
+                    className="si-field-control"
+                    value={category}
+                    onChange={(e) => handleCategoryChange(e.target.value)}
+                  >
                       {CATEGORIES.map((x) => (
                         <option key={x.value} value={x.value}>
                           {x.label}
                         </option>
                       ))}
-                    </select>
-                  </div>
+                  </select>
                 </Field>
               </div>
 
@@ -472,28 +358,11 @@ export function CreateLetter({ records, onSaved }: Props) {
                 style={{
                   marginTop: '0',
                   padding: '9px',
-                  border: '1px solid #f3c7d2',
-                  borderRadius: '14px',
-                  background: '#fff5f7',
-                  boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.9)',
+                  border: '1px solid #cbd5e1',
+                  borderRadius: '12px',
+                  background: '#f8fafc',
                 }}
               >
-                <div
-                  style={{
-                    width: '36px',
-                    height: '36px',
-                    borderRadius: '11px',
-                    background: '#ffe5eb',
-                    color: '#db2777',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                  }}
-                >
-                  <Hash size={19} strokeWidth={2.4} />
-                </div>
-
                 <input
                   className="si-sequence-input"
                   value={String(effectiveSequence).padStart(3, '0')}
@@ -544,26 +413,7 @@ export function CreateLetter({ records, onSaved }: Props) {
                 Keterangan / Judul Surat
               </label>
 
-              <div style={{ position: 'relative' }}>
-                <span
-                  style={{
-                    position: 'absolute',
-                    left: '13px',
-                    top: '13px',
-                    width: '34px',
-                    height: '34px',
-                    borderRadius: '10px',
-                    background: '#e7f9f0',
-                    color: '#0f9f6e',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    pointerEvents: 'none',
-                    zIndex: 1,
-                  }}
-                >
-                  <FileText size={16} />
-                </span>
+              <div>
                 <textarea
                   className="si-field-control si-textarea-control"
                   value={description}
@@ -572,9 +422,9 @@ export function CreateLetter({ records, onSaved }: Props) {
                   maxLength={200}
                   style={{
                     width: '100%',
-                    minHeight: '78px',
+                    minHeight: '70px',
                     resize: 'none',
-                    padding: '15px 15px 15px 58px',
+                    padding: '12px 14px',
                     boxSizing: 'border-box',
                   }}
                 />
@@ -826,6 +676,17 @@ export function CreateLetter({ records, onSaved }: Props) {
             .create-layout > .card:last-child strong {
               font-size: 18px !important;
             }
+          }
+
+          .dashboard-page,
+          .create-layout {
+            min-width: 0;
+          }
+
+          .create-layout label {
+            color: #334155;
+            font-size: 13px;
+            font-weight: 700;
           }
 
           .si-field-control,
