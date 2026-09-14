@@ -5,6 +5,7 @@ export const CLASSIFICATIONS = [
   { value: '400', label: '400' },
   { value: '420', label: '420' },
   { value: '800', label: '800' },
+  { value: '900', label: '900' },
 ]
 
 export const CATEGORIES = [
