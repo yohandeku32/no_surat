@@ -33,6 +33,7 @@ export function CreateLetter({ records, onSaved }: Props) {
   const [category, setCategory] = useState('KEP')
   const [sequence, setSequence] = useState('')
   const [description, setDescription] = useState('')
+  const [saving, setSaving] = useState(false)
 
   const [modal, setModal] = useState<ModalState>({
     open: false,
@@ -131,6 +132,8 @@ export function CreateLetter({ records, onSaved }: Props) {
   }
 
   async function save() {
+    if (saving) return
+
     const n = Number(effectiveSequence)
 
     if (!Number.isInteger(n) || n < 1) {
@@ -173,6 +176,8 @@ export function CreateLetter({ records, onSaved }: Props) {
       description: description.trim(),
     }
 
+    setSaving(true)
+
     try {
       const saved = await onSaved(record)
 
@@ -198,6 +203,8 @@ export function CreateLetter({ records, onSaved }: Props) {
           : 'Nomor surat gagal disimpan ke database.',
         number,
       )
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -363,6 +370,7 @@ export function CreateLetter({ records, onSaved }: Props) {
               <button
                 className="secondary-button"
                 onClick={reset}
+                disabled={saving}
               >
                 Reset
               </button>
@@ -370,9 +378,20 @@ export function CreateLetter({ records, onSaved }: Props) {
               <button
                 className="primary-button"
                 onClick={() => void save()}
+                disabled={saving}
+                aria-busy={saving}
               >
-                <Save size={17} />
-                Simpan Nomor Surat
+                {saving ? (
+                  <>
+                    <span className="button-spinner" />
+                    Menyimpan...
+                  </>
+                ) : (
+                  <>
+                    <Save size={17} />
+                    Simpan Nomor Surat
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -412,6 +431,30 @@ export function CreateLetter({ records, onSaved }: Props) {
           </div>
         </div>
       </section>
+
+      <style>
+        {`
+          .button-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,.35);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: siNosuratSpin .7s linear infinite;
+            display: inline-block;
+          }
+
+          .primary-button:disabled,
+          .secondary-button:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+          }
+
+          @keyframes siNosuratSpin {
+            to { transform: rotate(360deg); }
+          }
+        `}
+      </style>
 
       {/* CUSTOM MODAL */}
       {modal.open && (
