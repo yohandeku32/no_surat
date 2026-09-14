@@ -11,7 +11,7 @@ import type { LetterRecord } from '../types'
 
 interface Props {
   records: LetterRecord[]
-  onSaved: (record: LetterRecord) => void
+  onSaved: (record: LetterRecord) => Promise<LetterRecord>
 }
 
 type ModalType = 'success' | 'error'
@@ -130,7 +130,7 @@ export function CreateLetter({ records, onSaved }: Props) {
     setDescription('')
   }
 
-  function save() {
+  async function save() {
     const n = Number(effectiveSequence)
 
     if (!Number.isInteger(n) || n < 1) {
@@ -173,22 +173,32 @@ export function CreateLetter({ records, onSaved }: Props) {
       description: description.trim(),
     }
 
-    onSaved(record)
+    try {
+      const saved = await onSaved(record)
 
-    // Setelah disimpan:
-    // nomor langsung maju satu angka.
-    // Tidak perlu input manual lagi.
-    setSequence(String(n + 1))
+      // Setelah disimpan, nomor langsung maju satu angka.
+      // Tidak perlu input manual lagi.
+      setSequence(String(saved.sequence + 1))
 
-    // Keterangan dikosongkan untuk surat berikutnya.
-    setDescription('')
+      // Keterangan dikosongkan untuk surat berikutnya.
+      setDescription('')
 
-    showModal(
-      'success',
-      'Nomor Surat Berhasil Disimpan',
-      'Nomor surat telah berhasil ditambahkan ke riwayat penomoran.',
-      number,
-    )
+      showModal(
+        'success',
+        'Nomor Surat Berhasil Disimpan',
+        'Nomor surat telah berhasil disimpan ke database Google Sheets.',
+        saved.number,
+      )
+    } catch (error) {
+      showModal(
+        'error',
+        'Gagal Menyimpan',
+        error instanceof Error
+          ? error.message
+          : 'Nomor surat gagal disimpan ke database.',
+        number,
+      )
+    }
   }
 
   async function copyNumber() {
@@ -359,7 +369,7 @@ export function CreateLetter({ records, onSaved }: Props) {
 
               <button
                 className="primary-button"
-                onClick={save}
+                onClick={() => void save()}
               >
                 <Save size={17} />
                 Simpan Nomor Surat
