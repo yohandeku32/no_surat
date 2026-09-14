@@ -44,13 +44,7 @@ export function History({
   const [modal, setModal] = useState<ModalType | null>(null)
   const [editing, setEditing] = useState<LetterRecord | null>(null)
   const [deleting, setDeleting] = useState<LetterRecord | null>(null)
-  const [busy, setBusy] = useState(false)
-  const [notice, setNotice] = useState<{
-    type: 'success' | 'error'
-    title: string
-    message: string
-    number?: string
-  } | null>(null)
+  const [saving, setSaving] = useState(false)
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim()
@@ -93,7 +87,6 @@ export function History({
   }
 
   function closeModal() {
-    if (busy) return
     setModal(null)
     setEditing(null)
     setDeleting(null)
@@ -121,161 +114,91 @@ export function History({
   }
 
   async function saveEdit() {
-    if (!editing || busy) return
+    if (!editing || saving) return
 
     const sequence = Number(editing.sequence)
 
-    if (
-      !Number.isInteger(sequence) ||
-      sequence < 1
-    ) {
-      setNotice({
-        type: 'error',
-        title: 'Nomor Urut Tidak Valid',
-        message: 'Nomor urut harus berupa angka positif.',
-      })
+    if (!Number.isInteger(sequence) || sequence < 1) {
+      window.dispatchEvent(new CustomEvent('si-nosurat:toast', { detail: { type: 'error', title: 'Nomor Urut Tidak Valid', message: 'Nomor urut harus berupa angka positif.' } }))
       return
     }
 
     if (!editing.description.trim()) {
-      setNotice({
-        type: 'error',
-        title: 'Data Belum Lengkap',
-        message: 'Keterangan/judul surat wajib diisi.',
-      })
+      window.dispatchEvent(new CustomEvent('si-nosurat:toast', { detail: { type: 'error', title: 'Data Belum Lengkap', message: 'Keterangan/judul surat wajib diisi.' } }))
       return
     }
 
-    const dateYear = new Date(
-      editing.date + 'T00:00:00',
-    ).getFullYear()
+    const dateYear = new Date(editing.date + 'T00:00:00').getFullYear()
 
     const updated: LetterRecord = {
       ...editing,
       sequence,
       year: dateYear,
-      schoolCode:
-        editing.schoolCode.trim() || SCHOOL_DEFAULT,
+      schoolCode: editing.schoolCode.trim() || SCHOOL_DEFAULT,
       description: editing.description.trim(),
-      number: rebuildNumber({
-        ...editing,
-        sequence,
-        year: dateYear,
-      }),
+      number: rebuildNumber({ ...editing, sequence, year: dateYear }),
     }
 
     const duplicate = records.some(
-      (r) =>
-        r.id !== updated.id &&
-        r.number === updated.number,
+      (r) => r.id !== updated.id && r.number === updated.number,
     )
 
     if (duplicate) {
-      setNotice({
-        type: 'error',
-        title: 'Nomor Sudah Digunakan',
-        message:
-          'Nomor surat tersebut sudah digunakan oleh data lain.',
-        number: updated.number,
-      })
+      window.dispatchEvent(new CustomEvent('si-nosurat:toast', { detail: { type: 'error', title: 'Nomor Sudah Digunakan', message: 'Nomor surat tersebut sudah digunakan oleh data lain.' } }))
       return
     }
 
-    setBusy(true)
-
+    setSaving(true)
     try {
       const result = await onUpdate(updated)
-
-      setModal(null)
-      setEditing(null)
-      setDeleting(null)
-
-      setNotice({
-        type: 'success',
-        title: 'Perubahan Berhasil',
-        message:
-          'Data nomor surat berhasil diperbarui.',
-        number: result.number,
-      })
+      window.dispatchEvent(new CustomEvent('si-nosurat:toast', {
+        detail: { type: 'success', title: 'Perubahan Berhasil', message: 'Data nomor surat berhasil diperbarui.', number: result.number },
+      }))
+      closeModal()
     } catch (error) {
-      setNotice({
-        type: 'error',
-        title: 'Gagal Memperbarui',
-        message:
-          error instanceof Error
-            ? error.message
-            : 'Data gagal diperbarui.',
-        number: updated.number,
-      })
+      window.dispatchEvent(new CustomEvent('si-nosurat:toast', {
+        detail: { type: 'error', title: 'Gagal Memperbarui', message: error instanceof Error ? error.message : 'Data gagal diperbarui.', number: updated.number },
+      }))
     } finally {
-      setBusy(false)
+      setSaving(false)
     }
   }
 
   async function confirmDeleteOne() {
-    if (!deleting || busy) return
+    if (!deleting || saving) return
 
-    setBusy(true)
-
+    setSaving(true)
     try {
       const number = deleting.number
       await onDelete(deleting.id)
-
-      setModal(null)
-      setEditing(null)
-      setDeleting(null)
-
-      setNotice({
-        type: 'success',
-        title: 'Data Dihapus',
-        message:
-          'Nomor surat berhasil dihapus dari database.',
-        number,
-      })
+      window.dispatchEvent(new CustomEvent('si-nosurat:toast', {
+        detail: { type: 'success', title: 'Data Dihapus', message: 'Nomor surat berhasil dihapus dari database.', number },
+      }))
+      closeModal()
     } catch (error) {
-      setNotice({
-        type: 'error',
-        title: 'Gagal Menghapus',
-        message:
-          error instanceof Error
-            ? error.message
-            : 'Nomor surat gagal dihapus.',
-      })
+      window.dispatchEvent(new CustomEvent('si-nosurat:toast', {
+        detail: { type: 'error', title: 'Gagal Menghapus', message: error instanceof Error ? error.message : 'Data gagal dihapus.' },
+      }))
     } finally {
-      setBusy(false)
+      setSaving(false)
     }
   }
 
   async function confirmDeleteAll() {
-    if (busy) return
+    await onClear()
 
-    setBusy(true)
+    window.dispatchEvent(
+      new CustomEvent('si-nosurat:toast', {
+        detail: {
+          type: 'success',
+          title: 'Riwayat Dihapus',
+          message:
+            'Seluruh riwayat nomor surat telah dihapus dari database.',
+        },
+      }),
+    )
 
-    try {
-      await onClear()
-
-      setModal(null)
-      setEditing(null)
-      setDeleting(null)
-
-      setNotice({
-        type: 'success',
-        title: 'Riwayat Dihapus',
-        message:
-          'Seluruh riwayat nomor surat telah dihapus dari database.',
-      })
-    } catch (error) {
-      setNotice({
-        type: 'error',
-        title: 'Gagal Menghapus',
-        message:
-          error instanceof Error
-            ? error.message
-            : 'Riwayat gagal dihapus.',
-      })
-    } finally {
-      setBusy(false)
-    }
+    closeModal()
   }
 
   function downloadExcel() {
@@ -463,7 +386,6 @@ export function History({
                             onClick={() =>
                               openEdit(r)
                             }
-                            disabled={busy}
                           >
                             <Pencil size={15} />
                           </button>
@@ -474,7 +396,6 @@ export function History({
                             onClick={() =>
                               openDelete(r)
                             }
-                            disabled={busy}
                             style={{
                               color: '#dc2626',
                             }}
@@ -613,7 +534,6 @@ export function History({
                 className="icon-button"
                 onClick={closeModal}
                 title="Tutup"
-                disabled={busy}
               >
                 <X size={17} />
               </button>
@@ -750,16 +670,18 @@ export function History({
                   <button
                     className="secondary-button"
                     onClick={closeModal}
+                    disabled={saving}
                   >
                     Batal
                   </button>
 
                   <button
                     className="primary-button"
-                    onClick={saveEdit}
+                    onClick={() => void saveEdit()}
+                    disabled={saving}
                   >
                     <Check size={17} />
-                    Simpan Perubahan
+                    {saving ? 'Menyimpan...' : 'Simpan Perubahan'}
                   </button>
                 </div>
               </>
@@ -803,28 +725,18 @@ export function History({
                     <button
                       className="secondary-button"
                       onClick={closeModal}
-                      disabled={busy}
                     >
                       Batal
                     </button>
 
                     <button
                       className="danger-button"
-                      onClick={() => void confirmDeleteOne()}
-                      disabled={busy}
-                      aria-busy={busy}
+                      onClick={
+                        confirmDeleteOne
+                      }
                     >
-                      {busy ? (
-                        <>
-                          <span className="button-spinner" />
-                          Menghapus...
-                        </>
-                      ) : (
-                        <>
-                          <Trash2 size={16} />
-                          Ya, Hapus
-                        </>
-                      )}
+                      <Trash2 size={16} />
+                      Ya, Hapus
                     </button>
                   </div>
                 </>
@@ -861,6 +773,7 @@ export function History({
                   <button
                     className="secondary-button"
                     onClick={closeModal}
+                    disabled={saving}
                   >
                     Batal
                   </button>
@@ -880,132 +793,6 @@ export function History({
           </div>
         </div>
       )}
-
-      {notice && (
-        <div
-          onClick={() => setNotice(null)}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 10000,
-            background: 'rgba(15, 23, 42, .38)',
-            backdropFilter: 'blur(3px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 20,
-          }}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              width: '100%',
-              maxWidth: 440,
-              background: '#fff',
-              borderRadius: 20,
-              padding: 26,
-              boxShadow: '0 25px 70px rgba(15,23,42,.22)',
-            }}
-          >
-            <div
-              style={{
-                width: 56,
-                height: 56,
-                borderRadius: 16,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: 16,
-                background:
-                  notice.type === 'success'
-                    ? '#dcfce7'
-                    : '#fee2e2',
-                color:
-                  notice.type === 'success'
-                    ? '#16a34a'
-                    : '#dc2626',
-              }}
-            >
-              {notice.type === 'success' ? (
-                <Check size={28} />
-              ) : (
-                <AlertTriangle size={28} />
-              )}
-            </div>
-
-            <h3 style={{ margin: '0 0 8px', fontSize: 20 }}>
-              {notice.title}
-            </h3>
-
-            <p
-              style={{
-                margin: 0,
-                color: '#64748b',
-                lineHeight: 1.6,
-                fontSize: 14,
-              }}
-            >
-              {notice.message}
-            </p>
-
-            {notice.number && (
-              <div
-                style={{
-                  marginTop: 16,
-                  padding: 14,
-                  borderRadius: 12,
-                  background: '#f8fafc',
-                  border: '1px solid #e2e8f0',
-                  textAlign: 'center',
-                  fontWeight: 800,
-                  wordBreak: 'break-word',
-                }}
-              >
-                {notice.number}
-              </div>
-            )}
-
-            <button
-              className="primary-button"
-              style={{ width: '100%', marginTop: 20, justifyContent: 'center' }}
-              onClick={() => setNotice(null)}
-            >
-              Tutup
-            </button>
-          </div>
-        </div>
-      )}
-
-      <style>
-        {`
-          .button-spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255,255,255,.35);
-            border-top-color: #ffffff;
-            border-radius: 50%;
-            animation: siNosuratSpin .7s linear infinite;
-            display: inline-block;
-          }
-
-          .button-spinner.blue {
-            border-color: rgba(37,99,235,.22);
-            border-top-color: #2563eb;
-          }
-
-          .primary-button:disabled,
-          .secondary-button:disabled,
-          .danger-button:disabled,
-          .icon-button:disabled {
-            opacity: .65;
-            cursor: not-allowed;
-          }
-
-          @keyframes siNosuratSpin {
-            to { transform: rotate(360deg); }
-          }
-        `}
-      </style>
     </>
   )
 }
