@@ -60,231 +60,349 @@ export function Dashboard({ records, onNavigate }: Props) {
     .slice(0, 5)
 
   return (
-    <section
-      className="page-stack"
-      style={{
-        margin: '20px 24px 28px 24px',
-      }}
-    >
-      {/* HEADER */}
-      <div
-        className="welcome-row"
+    <>
+      <section
+        className="page-stack dashboard-page"
         style={{
-          marginBottom: '22px',
+          width: 'calc(100% - 20px)',
+          margin: '20px 10px 28px 10px',
+          boxSizing: 'border-box',
         }}
       >
-        <div>
-          <h2
-            style={{
-              marginBottom: '6px',
-              letterSpacing: '-0.3px',
-            }}
-          >
-            Selamat datang
-          </h2>
-
-          <p>
-            Kelola penomoran surat sekolah dengan cepat dan rapi.
-          </p>
-        </div>
-
-        <button
-          className="primary-button"
-          onClick={() => onNavigate('buat')}
+        {/* HEADER */}
+        <div
+          className="welcome-row"
           style={{
-            minHeight: '46px',
-            padding: '0 18px',
-            boxShadow: '0 8px 20px rgba(37, 99, 235, 0.18)',
+            marginBottom: '24px',
           }}
         >
-          <FilePlus2 size={17} />
-          Buat Nomor Surat
-        </button>
-      </div>
-
-      {/* STATISTIK */}
-      <div
-        className="stats-grid"
-        style={{
-          gap: '16px',
-          marginBottom: '22px',
-        }}
-      >
-        <Stat
-          icon={<FilePlus2 size={21} strokeWidth={2.2} />}
-          value={currentYearRecords.length}
-          label="Surat tahun berjalan"
-          iconColor="#2563eb"
-          iconBackground="#eaf2ff"
-        />
-
-        <Stat
-          icon={<Hash size={21} strokeWidth={2.2} />}
-          value={String(next).padStart(3, '0')}
-          label="Nomor berikutnya"
-          iconColor="#7c3aed"
-          iconBackground="#f2eaff"
-        />
-
-        <Stat
-          icon={<CheckCircle2 size={21} strokeWidth={2.2} />}
-          value={lastNumberRecord?.number ?? '-'}
-          label="Nomor terakhir bulan ini"
-          compact
-          iconColor="#16a34a"
-          iconBackground="#eaf8ef"
-        />
-
-        <Stat
-          icon={<Search size={21} strokeWidth={2.2} />}
-          value={monthCount}
-          label="Surat bulan ini"
-          iconColor="#ea580c"
-          iconBackground="#fff1e8"
-        />
-      </div>
-
-      {/* CONTENT */}
-      <div
-        className="two-column"
-        style={{
-          gap: '18px',
-        }}
-      >
-        {/* NOMOR TERBARU */}
-        <div className="card">
-          <div
-            className="card-header"
-            style={{
-              marginBottom: '16px',
-            }}
-          >
-            <div>
-              <h3>Nomor Terbaru</h3>
-              <p>Surat yang paling baru disimpan.</p>
-            </div>
-
-            <button
-              className="text-button"
-              onClick={() => onNavigate('riwayat')}
+          <div>
+            <h2
               style={{
-                whiteSpace: 'nowrap',
+                marginBottom: '6px',
+                letterSpacing: '-0.35px',
               }}
             >
-              Lihat semua
-              <ArrowRight size={15} />
-            </button>
+              Selamat datang
+            </h2>
+
+            <p>
+              Kelola penomoran surat sekolah dengan cepat dan rapi.
+            </p>
           </div>
 
-          {latest.length ? (
-            <div className="mini-table">
-              {latest.map((r, index) => (
-                <div
-                  className="mini-row"
-                  key={r.id}
-                  style={{
-                    padding: '13px 0',
-                    borderBottom:
-                      index === latest.length - 1
-                        ? 'none'
-                        : '1px solid #edf1f5',
-                  }}
-                >
+          <button
+            className="primary-button"
+            onClick={() => onNavigate('buat')}
+            style={{
+              minHeight: '48px',
+              padding: '0 20px',
+              boxShadow:
+                '0 8px 22px rgba(37, 99, 235, 0.18)',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <FilePlus2 size={18} />
+            Buat Nomor Surat
+          </button>
+        </div>
+
+        {/* STATISTIK */}
+        <div
+          className="stats-grid dashboard-stats"
+          style={{
+            gap: '18px',
+            marginBottom: '24px',
+          }}
+        >
+          <Stat
+            icon={
+              <FilePlus2
+                size={22}
+                strokeWidth={2.2}
+              />
+            }
+            value={currentYearRecords.length}
+            label="Surat tahun berjalan"
+            iconColor="#2563eb"
+            iconBackground="#eaf2ff"
+          />
+
+          <Stat
+            icon={
+              <Hash
+                size={22}
+                strokeWidth={2.2}
+              />
+            }
+            value={String(next).padStart(3, '0')}
+            label="Nomor berikutnya"
+            iconColor="#7c3aed"
+            iconBackground="#f2eaff"
+          />
+
+          <Stat
+            icon={
+              <CheckCircle2
+                size={22}
+                strokeWidth={2.2}
+              />
+            }
+            value={lastNumberRecord?.number ?? '-'}
+            label="Nomor terakhir bulan ini"
+            compact
+            iconColor="#16a34a"
+            iconBackground="#eaf8ef"
+          />
+
+          <Stat
+            icon={
+              <Search
+                size={22}
+                strokeWidth={2.2}
+              />
+            }
+            value={monthCount}
+            label="Surat bulan ini"
+            iconColor="#ea580c"
+            iconBackground="#fff1e8"
+          />
+        </div>
+
+        {/* CONTENT */}
+        <div
+          className="two-column dashboard-content"
+          style={{
+            gap: '20px',
+          }}
+        >
+          {/* NOMOR TERBARU */}
+          <div className="card">
+            <div
+              className="card-header"
+              style={{
+                marginBottom: '18px',
+              }}
+            >
+              <div>
+                <h3>Nomor Terbaru</h3>
+                <p>Surat yang paling baru disimpan.</p>
+              </div>
+
+              <button
+                className="text-button"
+                onClick={() => onNavigate('riwayat')}
+                style={{
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Lihat semua
+                <ArrowRight size={15} />
+              </button>
+            </div>
+
+            {latest.length ? (
+              <div className="mini-table">
+                {latest.map((r, index) => (
                   <div
+                    className="mini-row"
+                    key={r.id}
                     style={{
-                      minWidth: 0,
-                      gap: '5px',
+                      padding: '14px 0',
+                      borderBottom:
+                        index === latest.length - 1
+                          ? 'none'
+                          : '1px solid #edf1f5',
                     }}
                   >
-                    <strong
+                    <div
                       style={{
-                        fontSize: '13px',
-                        lineHeight: '1.4',
-                        wordBreak: 'break-word',
+                        minWidth: 0,
+                        gap: '6px',
                       }}
                     >
-                      {r.number}
-                    </strong>
+                      <strong
+                        style={{
+                          fontSize: '13.5px',
+                          lineHeight: '1.4',
+                          wordBreak: 'break-word',
+                        }}
+                      >
+                        {r.number}
+                      </strong>
+
+                      <span
+                        style={{
+                          fontSize: '12px',
+                          color: '#7c8ba1',
+                        }}
+                      >
+                        {r.date}
+                      </span>
+                    </div>
 
                     <span
+                      className="desc"
                       style={{
-                        fontSize: '12px',
-                        color: '#7c8ba1',
+                        maxWidth: '42%',
                       }}
                     >
-                      {r.date}
+                      {r.description}
                     </span>
                   </div>
-
-                  <span
-                    className="desc"
-                    style={{
-                      maxWidth: '42%',
-                    }}
-                  >
-                    {r.description}
-                  </span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="empty">
-              Belum ada nomor surat.
-            </div>
-          )}
-        </div>
-
-        {/* CARA MENGGUNAKAN */}
-        <div className="card">
-          <div
-            className="card-header"
-            style={{
-              marginBottom: '18px',
-            }}
-          >
-            <div>
-              <h3>Cara Menggunakan</h3>
-              <p>Alur sederhana untuk operator.</p>
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="empty">
+                Belum ada nomor surat.
+              </div>
+            )}
           </div>
 
-          <div
-            className="steps"
-            style={{
-              gap: '10px',
-            }}
-          >
-            <Step
-              number="01"
-              text="Pilih tanggal dan jenis surat."
-              background="#eaf2ff"
-              color="#2563eb"
-            />
+          {/* CARA MENGGUNAKAN */}
+          <div className="card">
+            <div
+              className="card-header"
+              style={{
+                marginBottom: '18px',
+              }}
+            >
+              <div>
+                <h3>Cara Menggunakan</h3>
+                <p>Alur sederhana untuk operator.</p>
+              </div>
+            </div>
 
-            <Step
-              number="02"
-              text="Nomor urut terisi otomatis."
-              background="#f2eaff"
-              color="#7c3aed"
-            />
+            <div
+              className="steps"
+              style={{
+                gap: '12px',
+              }}
+            >
+              <Step
+                number="01"
+                text="Pilih tanggal dan jenis surat."
+                background="#eaf2ff"
+                color="#2563eb"
+              />
 
-            <Step
-              number="03"
-              text="Nomor urut boleh diubah manual."
-              background="#eaf8ef"
-              color="#16a34a"
-            />
+              <Step
+                number="02"
+                text="Nomor urut terisi otomatis."
+                background="#f2eaff"
+                color="#7c3aed"
+              />
 
-            <Step
-              number="04"
-              text="Isi keterangan lalu simpan."
-              background="#fff1e8"
-              color="#ea580c"
-            />
+              <Step
+                number="03"
+                text="Nomor urut boleh diubah manual."
+                background="#eaf8ef"
+                color="#16a34a"
+              />
+
+              <Step
+                number="04"
+                text="Isi keterangan lalu simpan."
+                background="#fff1e8"
+                color="#ea580c"
+              />
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <style>
+        {`
+          /* LAPTOP */
+          .dashboard-page {
+            font-size: 1rem;
+          }
+
+          /* MONITOR DESKTOP BESAR / FULL HD */
+          @media (min-width: 1600px) {
+            .dashboard-page {
+              width: calc(100% - 28px) !important;
+              margin-left: 14px !important;
+              margin-right: 14px !important;
+            }
+
+            .dashboard-page .welcome-row {
+              margin-bottom: 28px !important;
+            }
+
+            .dashboard-page .stats-grid {
+              gap: 22px !important;
+              margin-bottom: 28px !important;
+            }
+
+            .dashboard-page .stat-card {
+              min-height: 158px !important;
+              padding: 23px 24px !important;
+              border-radius: 18px !important;
+            }
+
+            .dashboard-page .stat-icon {
+              width: 50px !important;
+              height: 50px !important;
+              border-radius: 14px !important;
+              margin-bottom: 15px !important;
+            }
+
+            .dashboard-page .two-column {
+              gap: 22px !important;
+            }
+
+            .dashboard-page .card {
+              border-radius: 18px;
+            }
+
+            .dashboard-page .mini-row {
+              padding: 15px 0 !important;
+            }
+
+            .dashboard-page .steps {
+              gap: 14px !important;
+            }
+          }
+
+          /* LAYAR MENENGAH */
+          @media (min-width: 1200px) and (max-width: 1599px) {
+            .dashboard-page {
+              width: calc(100% - 24px) !important;
+              margin-left: 12px !important;
+              margin-right: 12px !important;
+            }
+          }
+
+          /* LAPTOP KECIL */
+          @media (max-width: 1100px) {
+            .dashboard-page {
+              width: calc(100% - 24px) !important;
+              margin-left: 12px !important;
+              margin-right: 12px !important;
+            }
+
+            .dashboard-page .stats-grid {
+              gap: 12px !important;
+            }
+
+            .dashboard-page .stat-card {
+              padding: 17px 18px !important;
+              min-height: 132px !important;
+            }
+          }
+
+          /* TABLET / LAYAR SEMPIT */
+          @media (max-width: 850px) {
+            .dashboard-page {
+              width: calc(100% - 20px) !important;
+              margin-left: 10px !important;
+              margin-right: 10px !important;
+            }
+          }
+        `}
+      </style>
+    </>
   )
 }
 
@@ -307,9 +425,9 @@ function Stat({
     <div
       className="stat-card"
       style={{
-        minHeight: '142px',
-        padding: '20px 21px',
-        borderRadius: '16px',
+        minHeight: '146px',
+        padding: '21px 22px',
+        borderRadius: '17px',
         transition:
           'transform .18s ease, box-shadow .18s ease',
       }}
@@ -317,8 +435,8 @@ function Stat({
       <div
         className="stat-icon"
         style={{
-          width: '46px',
-          height: '46px',
+          width: '47px',
+          height: '47px',
           borderRadius: '13px',
           background: iconBackground,
           color: iconColor,
