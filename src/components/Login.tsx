@@ -43,32 +43,53 @@ export function Login({ onLogin }: Props) {
     <main
       style={{
         minHeight: '100vh',
+        width: '100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        position: 'relative',
+        overflow: 'hidden',
         padding: '28px',
-        background:
-          'linear-gradient(135deg, #eaf3f5 0%, #f5f8f9 52%, #eef4f5 100%)',
+        boxSizing: 'border-box',
+        backgroundImage:
+          "linear-gradient(rgba(15, 31, 38, 0.34), rgba(15, 31, 38, 0.46)), url('/sekolah.jpg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       <div
         style={{
+          position: 'absolute',
+          inset: 0,
+          background:
+            'linear-gradient(135deg, rgba(34, 154, 205, 0.10), rgba(72, 198, 168, 0.08))',
+          pointerEvents: 'none',
+        }}
+      />
+
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 1,
           width: '100%',
           maxWidth: '430px',
-          background: '#ffffff',
-          border: '1px solid #d8e3e6',
+          background: 'rgba(255, 255, 255, 0.96)',
+          border: '1px solid rgba(255,255,255,0.75)',
           borderTop: '4px solid #48c6a8',
           borderRadius: '16px',
           boxShadow:
-            '0 18px 50px rgba(31, 53, 61, 0.13)',
+            '0 24px 70px rgba(10, 23, 30, 0.30)',
           overflow: 'hidden',
+          backdropFilter: 'blur(8px)',
         }}
       >
         <div
           style={{
             padding: '30px 30px 22px',
-            background: '#f7fbfb',
-            borderBottom: '1px solid #e6edef',
+            background:
+              'linear-gradient(180deg, rgba(247,251,251,0.98), rgba(240,248,248,0.96))',
+            borderBottom: '1px solid #e4edef',
           }}
         >
           <div
@@ -82,6 +103,8 @@ export function Login({ onLogin }: Props) {
               background: '#dff6ee',
               color: '#179b78',
               marginBottom: '18px',
+              boxShadow:
+                '0 5px 16px rgba(23,155,120,0.12)',
             }}
           >
             <ShieldCheck size={28} />
@@ -164,8 +187,7 @@ export function Login({ onLogin }: Props) {
                   width: '100%',
                   boxSizing: 'border-box',
                   height: '48px',
-                  padding:
-                    '0 48px 0 14px',
+                  padding: '0 48px 0 14px',
                   border: error
                     ? '1px solid #ef8d8d'
                     : '1px solid #cddade',
@@ -256,6 +278,10 @@ export function Login({ onLogin }: Props) {
               alignItems: 'center',
               justifyContent: 'center',
               gap: '9px',
+              boxShadow:
+                loading || !password
+                  ? 'none'
+                  : '0 8px 18px rgba(244, 204, 43, 0.26)',
             }}
           >
             <LogIn size={17} />
