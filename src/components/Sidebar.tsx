@@ -1,186 +1,3 @@
-import {
-  FileText,
-  History,
-  Home,
-  Settings2,
-  Plus,
-  LogOut,
-} from 'lucide-react'
-import type { Page } from '../types'
-
-interface Props {
-  page: Page
-  onNavigate: (page: Page) => void
-  onLogout: () => void
-}
-
-const items: Array<{
-  id: Page
-  label: string
-  icon: typeof Home
-}> = [
-  {
-    id: 'dashboard',
-    label: 'Dashboard',
-    icon: Home,
-  },
-  {
-    id: 'buat',
-    label: 'Buat Nomor Surat',
-    icon: Plus,
-  },
-  {
-    id: 'riwayat',
-    label: 'Riwayat Penomoran',
-    icon: History,
-  },
-  {
-    id: 'pengaturan',
-    label: 'Pengaturan',
-    icon: Settings2,
-  },
-]
-
-export function Sidebar({
-  page,
-  onNavigate,
-  onLogout,
-}: Props) {
-  return (
-    <aside
-      className="sidebar"
-      style={{
-        width: '270px',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      <div
-        className="brand"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '13px',
-          padding: '28px 12px 25px',
-        }}
-      >
-        <div
-          style={{
-            width: '52px',
-            height: '52px',
-            flexShrink: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <img
-            src="https://sistemyaswarikak.com/sistem_accounting/asset/images/logo2.png"
-            alt="Logo Yayasan Swasti Sari KAK"
-            style={{
-              width: '52px',
-              height: '52px',
-              objectFit: 'contain',
-              display: 'block',
-            }}
-          />
-        </div>
-
-        <div style={{ minWidth: 0 }}>
-          <strong
-            style={{
-              display: 'block',
-              fontSize: '20px',
-              lineHeight: 1.15,
-              color: '#ffffff',
-              fontWeight: 800,
-              letterSpacing: '-0.2px',
-            }}
-          >
-            SIPESURAT
-          </strong>
-
-          <span
-            style={{
-              display: 'block',
-              marginTop: '5px',
-              fontSize: '12px',
-              lineHeight: 1.3,
-              color: '#a9bfd4',
-            }}
-          >
-            Sistem Pengelolaan Surat Sekolah
-          </span>
-        </div>
-      </div>
-
-      <div className="nav-section-label">
-        MENU UTAMA
-      </div>
-
-      <nav>
-        {items.map((item) => {
-          const Icon = item.icon
-          const active = page === item.id
-
-          return (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => onNavigate(item.id)}
-              className={
-                active
-                  ? 'nav-item active'
-                  : 'nav-item'
-              }
-            >
-              <Icon size={18} />
-              <span>{item.label}</span>
-            </button>
-          )
-        })}
-      </nav>
-
-      <div
-        className="sidebar-bottom"
-        style={{
-          marginTop: 'auto',
-          paddingTop: '18px',
-        }}
-      >
-        <div
-          style={{
-            borderTop:
-              '1px solid rgba(255,255,255,.10)',
-            paddingTop: '18px',
-          }}
-        >
-          <div
-            style={{
-              background:
-                'rgba(255,255,255,.07)',
-              borderRadius: '14px',
-              padding: '16px',
-              lineHeight: 1.55,
-            }}
-          >
-            <div
-              style={{
-                fontSize: '13px',
-                fontWeight: 800,
-                color: '#ffffff',
-                marginBottom: '7px',
-              }}
-            >
-              SDK ST. YOSEPH KUAPUTU
-            </div>
-
-            <div
-              style={{
-                fontSize: '12px',
-                color: '#bfd0e4',
-                marginBottom: '4px',
-              }}
             >
               Oemasi, Nekamese
             </div>
@@ -220,16 +37,12 @@ export function Sidebar({
               transition: 'all .18s ease',
             }}
             onMouseEnter={(event) => {
-              event.currentTarget.style.background =
-                '#b91c1c'
-              event.currentTarget.style.borderColor =
-                '#b91c1c'
+              event.currentTarget.style.background = '#b91c1c'
+              event.currentTarget.style.borderColor = '#b91c1c'
             }}
             onMouseLeave={(event) => {
-              event.currentTarget.style.background =
-                '#dc2626'
-              event.currentTarget.style.borderColor =
-                '#dc2626'
+              event.currentTarget.style.background = '#dc2626'
+              event.currentTarget.style.borderColor = '#dc2626'
             }}
           >
             <LogOut size={16} />
@@ -237,6 +50,76 @@ export function Sidebar({
           </button>
         </div>
       </div>
+
+      <div
+        role="separator"
+        aria-orientation="vertical"
+        aria-label="Atur lebar sidebar"
+        title="Tarik untuk mengatur lebar sidebar"
+        onMouseDown={startResize}
+        onDoubleClick={resetWidth}
+        style={{
+          position: 'absolute',
+          top: 0,
+          right: '-5px',
+          width: '10px',
+          height: '100%',
+          cursor: 'col-resize',
+          zIndex: 20,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div
+          style={{
+            width: '4px',
+            height: '54px',
+            borderRadius: '99px',
+            background: 'rgba(255,255,255,.18)',
+            transition: 'all .18s ease',
+          }}
+        />
+        <GripVertical
+          size={14}
+          style={{
+            position: 'absolute',
+            color: 'rgba(255,255,255,.6)',
+            pointerEvents: 'none',
+          }}
+        />
+      </div>
+
+      <style>
+        {`
+          .sidebar {
+            flex-shrink: 0;
+            transition: width .08s linear, min-width .08s linear, max-width .08s linear;
+          }
+
+          .sidebar .nav-item {
+            box-sizing: border-box;
+          }
+
+          .sidebar [role="separator"]:hover > div {
+            background: rgba(255,255,255,.45) !important;
+            width: 5px !important;
+          }
+
+          .sidebar [role="separator"]:active > div {
+            background: #ffffff !important;
+            width: 5px !important;
+          }
+
+          @media (max-width: 900px) {
+            .sidebar {
+              width: 250px !important;
+              min-width: 250px !important;
+              max-width: 250px !important;
+            }
+          }
+        `}
+      </style>
     </aside>
   )
 }
