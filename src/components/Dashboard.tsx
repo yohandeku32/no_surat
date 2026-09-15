@@ -1,4 +1,4 @@
-
+import {
   ArrowRight,
   FilePlus2,
   Hash,
@@ -122,7 +122,7 @@ export function Dashboard({ records, onNavigate }: Props) {
                 strokeWidth={2.2}
               />
             }
-            value={currentYearRecords.length}
+            value={String(currentYearRecords.length)}
             label="Surat tahun berjalan"
             iconColor="#2563eb"
             iconBackground="#eaf2ff"
@@ -141,58 +141,16 @@ export function Dashboard({ records, onNavigate }: Props) {
             iconBackground="#f2eaff"
           />
 
-          <Stat
+          <LastNumberStat
             icon={
               <CheckCircle2
                 size={22}
                 strokeWidth={2.2}
               />
             }
-            value={
-              lastNumberRecord ? (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '5px',
-                    minWidth: 0,
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: '18px',
-                      fontWeight: 800,
-                      lineHeight: 1.3,
-                      wordBreak: 'break-word',
-                      color: '#14213d',
-                    }}
-                  >
-                    {lastNumberRecord.number}
-                  </span>
-
-                  <span
-                    style={{
-                      fontSize: '12px',
-                      fontWeight: 500,
-                      lineHeight: 1.4,
-                      color: '#64748b',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    {lastNumberRecord.description}
-                  </span>
-                </div>
-              ) : (
-                '-'
-              )
-            }
+            number={lastNumberRecord?.number ?? '-'}
+            description={lastNumberRecord?.description ?? ''}
             label="Nomor terakhir bulan ini"
-            compact
-            iconColor="#16a34a"
-            iconBackground="#eaf8ef"
           />
 
           <Stat
@@ -202,7 +160,7 @@ export function Dashboard({ records, onNavigate }: Props) {
                 strokeWidth={2.2}
               />
             }
-            value={monthCount}
+            value={String(monthCount)}
             label="Surat bulan ini"
             iconColor="#ea580c"
             iconBackground="#fff1e8"
@@ -353,7 +311,6 @@ export function Dashboard({ records, onNavigate }: Props) {
 
       <style>
         {`
-          /* LAPTOP */
           .dashboard-page {
             font-size: 1rem;
           }
@@ -368,15 +325,6 @@ export function Dashboard({ records, onNavigate }: Props) {
 
           .dashboard-page .stat-card strong {
             font-size: 30px;
-          }
-
-          .dashboard-page .stat-card .compact-value {
-            font-size: 18px;
-            line-height: 1.35;
-          }
-
-          .dashboard-page .stat-card .compact-value span {
-            max-width: 100%;
           }
 
           /* MONITOR DESKTOP BESAR / FULL HD */
@@ -412,18 +360,6 @@ export function Dashboard({ records, onNavigate }: Props) {
 
             .dashboard-page .stat-card strong {
               font-size: 32px !important;
-            }
-
-            .dashboard-page .stat-card .compact-value {
-              font-size: 19px !important;
-            }
-
-            .dashboard-page .stat-card .compact-value span:first-child {
-              font-size: 19px !important;
-            }
-
-            .dashboard-page .stat-card .compact-value span:last-child {
-              font-size: 12.5px !important;
             }
 
             .dashboard-page .stat-icon {
@@ -495,14 +431,12 @@ function Stat({
   icon,
   value,
   label,
-  compact = false,
   iconColor,
   iconBackground,
 }: {
   icon: React.ReactNode
-  value: string | number
+  value: string
   label: string
-  compact?: boolean
   iconColor: string
   iconBackground: string
 }) {
@@ -535,12 +469,10 @@ function Stat({
       </div>
 
       <strong
-        className={compact ? 'compact-value' : ''}
         style={{
           color: '#14213d',
           lineHeight: '1.2',
           display: 'block',
-          wordBreak: compact ? 'break-word' : 'normal',
         }}
       >
         {value}
@@ -549,6 +481,86 @@ function Stat({
       <span
         style={{
           marginTop: '6px',
+          display: 'block',
+        }}
+      >
+        {label}
+      </span>
+    </div>
+  )
+}
+
+function LastNumberStat({
+  icon,
+  number,
+  description,
+  label,
+}: {
+  icon: React.ReactNode
+  number: string
+  description: string
+  label: string
+}) {
+  return (
+    <div
+      className="stat-card"
+      style={{
+        minHeight: '146px',
+        padding: '21px 22px',
+        borderRadius: '17px',
+        transition:
+          'transform .18s ease, box-shadow .18s ease',
+      }}
+    >
+      <div
+        className="stat-icon"
+        style={{
+          width: '47px',
+          height: '47px',
+          borderRadius: '13px',
+          background: '#eaf8ef',
+          color: '#16a34a',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: '14px',
+        }}
+      >
+        {icon}
+      </div>
+
+      <strong
+        style={{
+          color: '#14213d',
+          fontSize: '18px',
+          lineHeight: '1.3',
+          display: 'block',
+          wordBreak: 'break-word',
+        }}
+      >
+        {number}
+      </strong>
+
+      {description && (
+        <span
+          style={{
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            marginTop: '5px',
+            color: '#64748b',
+            fontSize: '12px',
+            lineHeight: '1.4',
+          }}
+        >
+          {description}
+        </span>
+      )}
+
+      <span
+        style={{
+          marginTop: '7px',
           display: 'block',
         }}
       >
