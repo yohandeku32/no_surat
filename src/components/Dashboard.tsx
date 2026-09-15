@@ -148,7 +148,47 @@ export function Dashboard({ records, onNavigate }: Props) {
                 strokeWidth={2.2}
               />
             }
-            value={lastNumberRecord?.number ?? '-'}
+            value={
+              lastNumberRecord ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '5px',
+                    minWidth: 0,
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: '18px',
+                      fontWeight: 800,
+                      lineHeight: 1.3,
+                      wordBreak: 'break-word',
+                      color: '#14213d',
+                    }}
+                  >
+                    {lastNumberRecord.number}
+                  </span>
+
+                  <span
+                    style={{
+                      fontSize: '12px',
+                      fontWeight: 500,
+                      lineHeight: 1.4,
+                      color: '#64748b',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    {lastNumberRecord.description}
+                  </span>
+                </div>
+              ) : (
+                '-'
+              )
+            }
             label="Nomor terakhir bulan ini"
             compact
             iconColor="#16a34a"
@@ -335,6 +375,10 @@ export function Dashboard({ records, onNavigate }: Props) {
             line-height: 1.35;
           }
 
+          .dashboard-page .stat-card .compact-value span {
+            max-width: 100%;
+          }
+
           /* MONITOR DESKTOP BESAR / FULL HD */
           @media (min-width: 1600px) {
             .dashboard-page {
@@ -372,6 +416,14 @@ export function Dashboard({ records, onNavigate }: Props) {
 
             .dashboard-page .stat-card .compact-value {
               font-size: 19px !important;
+            }
+
+            .dashboard-page .stat-card .compact-value span:first-child {
+              font-size: 19px !important;
+            }
+
+            .dashboard-page .stat-card .compact-value span:last-child {
+              font-size: 12.5px !important;
             }
 
             .dashboard-page .stat-icon {
